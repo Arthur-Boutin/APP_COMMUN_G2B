@@ -1,12 +1,36 @@
 <!DOCTYPE html>
-<html>
- <head>
-   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-   <link rel="stylesheet" type="text/css" href="style.css" />
-   <title> Buzzer Temp Control </title>
- </head>
- <body>
-    <h1>Hello World</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
- </body>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temp Control Club</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Temp Control Club</h1>
+            <p class="subtitle">Système de surveillance de température</p>
+        </header>
+        
+        <main>
+            <div class="login-section">
+                <button class="login-btn">Connexion</button>
+            </div>
+            
+            <div class="info-section">
+                <div class="temp-display">
+                    <h2>Température actuelle</h2>
+                    <div class="temp-value">--°C</div> <!-- Ici va fallaire surement faire du javascript pour mettre la temperature en temp réel -->
+                </div>
+                
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <p>État du système</p>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
 </html>
