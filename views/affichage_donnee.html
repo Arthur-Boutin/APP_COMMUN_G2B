@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temp Control Club</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tableau de bord</h1>
+            <p>Affichage des données des capteurs ou actionneurs</p>
+        </header>
+        <div class="section">
+            <h2> Données des capteurs</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Nom du capteur</th>
+                    <th>Type</th>
+                    <th>Valeur</th> 
+                    <th>Date</th>
+                </tr> 
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Capteur THD</td>
+                        <td>Température (°C)</td>
+                        <td>24.5</td>
+                        <td>11/06/2025</td>
+                    </tr>
+                    <tr>
+                        <td>Capteur Son </td>
+                        <td>Décibel (dB)</td>
+                        <td>90</td>
+                        <td>11/06/2025</td>
+                    </tr>
+                </tbody> 
+            </table>
+        </div>
+
+        <div class="section">
+            <h2> Contrôle des actionneurs</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Actionneur</th>
+                        <th>État</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Buzzer</td>
+                        <td>Inactif</td>
+                        <td>10/06/2025</td>
+                    </tr>
+                    <tr>
+                        <td>Ventilateur</td>
+                        <td>Inactif</td>
+                        <td>10/06/2025</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
