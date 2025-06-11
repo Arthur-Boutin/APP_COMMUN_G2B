@@ -26,20 +26,34 @@ body {
 }
 
 .section {
-      margin: 30px 0;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    table, th, td {
-      border: 1px solid #ddd;
-    }
-    th, td {
-      padding: 12px;
-      text-align: center;
-    }
+    margin: 30px 0;
+}
+
+.simple-readings-list {
+    list-style: none;
+    padding: 0; 
+    margin-top: 1.5rem;
+    background: rgba(255, 255, 255, 0.08); 
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.simple-readings-list li {
+    padding: 1rem 1.5rem; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #e0e0e0; 
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.simple-readings-list li:last-child {
+    border-bottom: none; 
+}
+
+.simple-readings-list li:hover {
+    background-color: rgba(255, 255, 255, 0.15); 
+}
 
 header {
     text-align: center;
