@@ -13,10 +13,13 @@ session_start();
 $lastSensorsReadings = array();
 foreach (getSensorsList() as $sensor) {
     $lastReading = getLastReading($sensor['id_objet']);
-    $formattedDate = new DateTime($lastReading['date_mesure'], new DateTimeZone('UTC'))
-        ->format('d/m/Y à H:i:s');
 
-    $formattedReading = $lastReading ? $sensor['description'] . ' : ' . round($lastReading['valeur_mesure'], 2) . " " . $sensor['unite'] . " - le " . $formattedDate : 'Aucune lecture';
+    if ($lastReading !== null) {
+        $formattedDate = new DateTime($lastReading['date_mesure'], new DateTimeZone('UTC'))
+            ->format('d/m/Y à H:i:s');
+    }
+
+    $formattedReading = $lastReading ? $sensor['description'] . ' : ' . round($lastReading['valeur_mesure'], 2) . " " . $sensor['unite'] . " - le " . $formattedDate : 'Aucun relevé disponible';
     array_push($lastSensorsReadings, $formattedReading);
 }
 
