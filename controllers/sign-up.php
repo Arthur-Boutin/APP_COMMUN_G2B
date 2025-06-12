@@ -92,4 +92,7 @@ if (isset($_POST) && count($_POST) > 0) {
     }
 }
 
+include_once 'views/components/header.html';
 include_once '../views/sign-up.html';
+include_once 'views/components/footer.html';
+include_once 'views/main.html';

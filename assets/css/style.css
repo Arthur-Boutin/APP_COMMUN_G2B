@@ -1,29 +1,35 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: "Orbitron", sans-serif;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  color: #fff;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    font-family: "Orbitron", sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .container {
-  width: 90%;
-  max-width: 800px;
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+    width: 90%;
+    max-width: 800px;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    margin: 2rem auto; /* Centre le container horizontalement et ajoute une marge en haut/bas */
+    flex-grow: 1;
+}
+
+.container-data {
+    width: 100%;
 }
 
 .section {
@@ -31,19 +37,19 @@ body {
 }
 
 .required {
-  color: red!important;
-  padding-bottom: 4%;
-  text-align: center;
+    color: red !important;
+    padding-bottom: 4%;
+    text-align: center;
 }
 
 .wrong-signup {
-  display: block;
-  color: red;
-  margin-top: 6%;
-  text-align: center;
-  font-size: 1em;
-  margin-bottom: 4%;
-  letter-spacing: 0.1rem;
+    display: block;
+    color: red;
+    margin-top: 6%;
+    text-align: center;
+    font-size: 1em;
+    margin-bottom: 4%;
+    letter-spacing: 0.1rem;
 }
 
 .simple-readings-list {
@@ -73,173 +79,281 @@ body {
 }
 
 header {
-  text-align: center;
-  margin-bottom: 3rem;
+    width: 100%; /* Prend toute la largeur */
+    background-color: #16213e; /* Couleur de fond pour la barre, peut être ajustée */
+    padding: 1rem 0; /* Remplissage vertical, horizontal géré par le contenu interne */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Ombre optionnelle pour la démarcation */
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.header-top-content {
+    padding: 0 2rem; /* Ajoute un peu d'espacement horizontal au contenu du titre */
+    margin-bottom: 0.5rem; /* Réduit la marge si la nav est juste en dessous */
+}
+
+.main-navigation {
+    /* margin-top: 1.5rem; -- Peut être ajusté ou supprimé si l'espacement est géré par le padding du header */
+    padding-bottom: 0; /* La nav est la dernière chose dans le header bar */
+}
+
+.main-navigation ul {
+    /* Les styles existants pour la navigation sont bons */
+    /* gap: 0.8rem 1.5rem; -- Peut être ajusté pour l'esthétique dans la barre */
 }
 
 h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(45deg, #00f2fe, #4facfe);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 10px rgba(79, 172, 254, 0.3);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(45deg, #00f2fe, #4facfe);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px rgba(79, 172, 254, 0.3);
 }
 
 .subtitle {
-  color: #a8b2d1;
-  font-size: 1.1rem;
+    color: #a8b2d1;
+    font-size: 1.1rem;
 }
 
 .login-section {
-  text-align: center;
-  margin-bottom: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
 .login-btn {
-  background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
-  border: none;
-  padding: 1rem 2rem;
-  color: white;
-  font-family: "Orbitron", sans-serif;
-  font-size: 1.1rem;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+    border: none;
+    padding: 1rem 2rem;
+    color: white;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .login-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
 }
 
 .info-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
 }
 
 .temp-display {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1.5rem;
-  border-radius: 15px;
-  text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
 }
 
 .temp-value {
-  font-size: 3rem;
-  font-weight: bold;
-  margin-top: 1rem;
-  color: #4facfe;
+    font-size: 3rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    color: #4facfe;
 }
 
 .status-indicator {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1.5rem;
-  border-radius: 15px;
-  text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
 }
 
 .status-dot {
-  width: 20px;
-  height: 20px;
-  background: #4facfe;
-  border-radius: 50%;
-  margin: 1rem auto;
-  box-shadow: 0 0 10px #4facfe;
-  animation: pulse 2s infinite;
+    width: 20px;
+    height: 20px;
+    background: #4facfe;
+    border-radius: 50%;
+    margin: 1rem auto;
+    box-shadow: 0 0 10px #4facfe;
+    animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.7;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@media (max-width: 600px) {
-  .info-section {
-    grid-template-columns: 1fr;
-  }
-
-  h1 {
-    font-size: 2rem;
-  }
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
-  text-align: left;
+    margin-bottom: 1.5rem;
+    text-align: left;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #a8b2d1;
-  font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #a8b2d1;
+    font-size: 0.9rem;
 }
 
 .form-group input {
-  width: 100%;
-  padding: 0.8rem 1rem;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  color: #fff;
-  font-family: "Orbitron", sans-serif;
-  font-size: 1rem;
-  transition: all 0.3s ease;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #fff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
 .form-group input:focus {
-  outline: none;
-  border-color: #4facfe;
-  box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
+    outline: none;
+    border-color: #4facfe;
+    box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
 }
 
 .form-btn {
-  background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
-  border: none;
-  padding: 0.8rem 2rem;
-  color: white;
-  font-family: "Orbitron", sans-serif;
-  font-size: 1.1rem;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 100%;
-  margin-top: 1rem;
+    background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+    border: none;
+    padding: 0.8rem 2rem;
+    color: white;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    margin-top: 1rem;
 }
 
 .form-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
 }
 
 .form-footer-text {
-  text-align: center;
-  margin-top: 2rem;
-  color: #a8b2d1;
+    text-align: center;
+    margin-top: 2rem;
+    color: #a8b2d1;
 }
 
 .form-footer-text a {
-  color: #00f2fe;
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease;
+    color: #00f2fe;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
 }
 
 .form-footer-text a:hover {
-  color: #fff;
-  text-decoration: underline;
+    color: #fff;
+    text-decoration: underline;
+}
+
+.main-navigation {
+    margin-top: 1.5rem; /* Espace entre le sous-titre et la navigation */
+    padding-bottom: 1rem; /* Espace sous la navigation avant le contenu principal */
+}
+
+.main-navigation ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; /* Permet aux liens de passer à la ligne sur petits écrans */
+    gap: 0.8rem 1.5rem; /* Espace vertical et horizontal entre les liens */
+}
+
+.main-navigation ul li a {
+    font-family: 'Orbitron', sans-serif;
+    color: #a8b2d1; /* Couleur des liens, similaire au sous-titre */
+    text-decoration: none;
+    font-size: 0.95rem; /* Taille de police des liens */
+    padding: 0.6rem 1.2rem; /* Remplissage des liens */
+    border-radius: 20px; /* Bords arrondis */
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 1px solid transparent; /* Bordure initiale transparente pour une transition douce */
+    display: inline-block; /* Assure que le padding et la bordure s'appliquent correctement */
+}
+
+.main-navigation ul li a:hover,
+.main-navigation ul li a.active { /* 'active' peut être ajoutée dynamiquement à la page courante */
+    background-color: rgba(79, 172, 254, 0.15); /* Fond légèrement bleuté au survol */
+    color: #00f2fe; /* Couleur du texte au survol, bleu cyan vif */
+    border-color: rgba(79, 172, 254, 0.4); /* Bordure subtile au survol */
+    box-shadow: 0 2px 10px rgba(79, 172, 254, 0.2); /* Ombre portée légère */
+}
+
+/* Styles pour la barre de footer */
+footer {
+    width: 100%;
+    background-color: #16213e; /* Même couleur que le header pour la cohérence */
+    color: #a8b2d1; /* Couleur de texte pour le footer */
+    padding: 1.5rem 0; /* Remplissage vertical */
+    text-align: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3); /* Ombre en haut du footer */
+    margin-top: auto; /* Pousse le footer en bas si le contenu de la page est court */
+}
+
+.footer-content {
+    max-width: 800px; /* Correspond à la largeur max du .container pour l'alignement */
+    margin: 0 auto; /* Centre le contenu du footer */
+    padding: 0 1rem; /* Espacement horizontal pour le contenu */
+}
+
+.footer-content p {
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.footer-content p:last-child {
+    margin-bottom: 0;
+}
+
+.footer-content a {
+    color: #4facfe; /* Couleur d'accentuation pour les liens */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-content a:hover {
+    color: #00f2fe; /* Couleur au survol */
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .info-section {
+        grid-template-columns: 1fr;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-navigation ul {
+        flex-direction: column; /* Liens empilés verticalement */
+        gap: 0.5rem; /* Espace réduit en mode colonne */
+    }
+
+    .main-navigation ul li a {
+        width: 80%; /* Les liens prennent plus de largeur */
+        max-width: 250px; /* mais pas trop */
+        text-align: center; /* Texte centré dans les liens */
+    }
+
+    header {
+        margin-bottom: 1.5rem;
+    }
 }

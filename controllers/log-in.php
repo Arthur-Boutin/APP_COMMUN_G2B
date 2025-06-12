@@ -33,4 +33,6 @@ if (isset($_POST) && count($_POST) > 0) {
     }
 }
 
+include_once '../views/components/header.html';
 include_once '../views/log-in.html';
+include_once '../views/components/footer.html';
