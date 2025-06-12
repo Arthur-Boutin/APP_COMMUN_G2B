@@ -5,15 +5,13 @@ session_start();
 
 $errors = array();
 
-/*if (isset($_SESSION['account'])) {
+if (isset($_SESSION['account'])) {
     header("Location: ../index.php");
-}*/
+}
 
-var_dump($_SESSION);
-
-require_once 'modele/user/insertUser.php';
-require_once 'modele/user/checkCredentials.php';
-require_once 'modele/user/getUser.php';
+require_once '../modele/user/insertUser.php';
+require_once '../modele/user/checkCredentials.php';
+require_once '../modele/user/getUser.php';
 
 $pseudonyme = $motDePasse = $prenom = $nom = $email = "";
 
@@ -89,6 +87,7 @@ if (isset($_POST) && count($_POST) > 0) {
 
             $account = getUser($email);
             header("Location: ../index.php");
+            exit;
         }
     }
 }

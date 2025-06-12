@@ -15,6 +15,16 @@
         <p class="subtitle">Remplissez les champs pour vous inscrire</p>
     </header>
     <main>
+        <?php if (!empty($errors)) : ?>
+
+        <?php foreach ($errors as $error): ?>
+            <div class="wrong-signup">
+                <?= $error ?> <br/>
+            </div>
+        <?php endforeach; ?>
+
+        <?php endif; ?>
+
         <form action="#" method="post">
             <div class="form-group">
                 <label for="fName">Prénom<span class="required">*</span></label>
