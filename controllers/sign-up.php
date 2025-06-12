@@ -30,7 +30,7 @@ if (isset($_POST) && count($_POST) > 0) {
     $validateEmail = validateEmail($email);
     $validateEmailUnique = uniqueMail($email);
     $validatePassword = validatePassword($motDePasse);
-    $hashedPassword = validatePassword($motDePasse);
+    $hashedPassword = hashPassword($motDePasse);
 
     if (!$validateEmail) {
         $errors['email'] = "Veuillez saisir un mail valide.";
