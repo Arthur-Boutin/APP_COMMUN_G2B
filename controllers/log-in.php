@@ -4,11 +4,10 @@ session_start();
 
 $errors = array();
 
-/*if (isset($_SESSION['account'])) {
+if (isset($_SESSION['account'])) {
     header("Location: ../index.php");
-}*/
-
-var_dump($_SESSION);
+    exit;
+}
 
 if (isset($_POST) && count($_POST) > 0) {
     if (!isset($_POST['email']) || !isset($_POST['password'])) {
@@ -30,6 +29,7 @@ if (isset($_POST) && count($_POST) > 0) {
         $_SESSION['username'] = $account['pseudonyme'];
 
         header("Location: ../index.php");
+        exit;
     }
 }
 

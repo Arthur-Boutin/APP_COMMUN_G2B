@@ -5,10 +5,15 @@
     </div>
     <nav class="main-navigation">
         <ul>
-            <li><a href="../../controllers/index.php">Accueil</a></li>
+            <li><a href="index.php">Accueil</a></li>
             <li><a href="../gestion_capteurs.html">Gestion des capteurs</a></li>
             <li><a href="../affichage_donnees.html">Affichage des données</a></li>
-            <li><a href="../../controllers/log-in.php">Inscription/Connexion</a></li>
+            <?php if (isset($_SESSION['username'])): ?>
+            <?php echo $_SESSION['username']; ?>
+                <li><a href="controllers/log-out.php">Déconnexion</a></li>
+            <?php else: ?>
+                <li><a href="controllers/log-in.php">Connexion</a></li>
+            <?php endif; ?>
         </ul>
     </nav>
 </header>
