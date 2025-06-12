@@ -1,11 +1,12 @@
 <?php
 require_once '../config/constants.php';
+
 session_start();
 
 $errors = array();
 
 if (isset($_SESSION['account'])) {
-    header("Location: ../index.php");
+    header("Location: index.php");
     exit;
 }
 
@@ -28,11 +29,11 @@ if (isset($_POST) && count($_POST) > 0) {
         $_SESSION['account'] = $account;
         $_SESSION['username'] = $account['pseudonyme'];
 
-        header("Location: ../index.php");
+        header("Location: index.php");
         exit;
     }
 }
 
-include_once '../views/components/header.html';
-include_once '../views/log-in.html';
-include_once '../views/components/footer.html';
+include_once PROJECT_ROOT . '/views/components/header.html';
+include_once PROJECT_ROOT . '/views/log-in.html';
+include_once PROJECT_ROOT . '/views/components/footer.html';

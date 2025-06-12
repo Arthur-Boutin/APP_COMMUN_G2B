@@ -6,12 +6,12 @@ session_start();
 $errors = array();
 
 if (isset($_SESSION['account'])) {
-    header("Location: ../index.php");
+    header("Location: index.php");
 }
 
-require_once '../modele/user/insertUser.php';
-require_once '../modele/user/checkCredentials.php';
-require_once '../modele/user/getUser.php';
+require_once PROJECT_ROOT . '/modele/user/insertUser.php';
+require_once PROJECT_ROOT . '/modele/user/checkCredentials.php';
+require_once PROJECT_ROOT . '/modele/user/getUser.php';
 
 $pseudonyme = $motDePasse = $prenom = $nom = $email = "";
 
@@ -86,12 +86,12 @@ if (isset($_POST) && count($_POST) > 0) {
             $result = insertUser($pseudonyme, $hashedPassword, $prenom, $nom, $email);
 
             $account = getUser($email);
-            header("Location: ../index.php");
+            header("Location: index.php");
             exit;
         }
     }
 }
 
-include_once '../views/components/header.html';
-include_once '../views/sign-up.html';
-include_once '../views/components/footer.html';
+include_once PROJECT_ROOT . '/views/components/header.html';
+include_once PROJECT_ROOT . '/views/sign-up.html';
+include_once PROJECT_ROOT . '/views/components/footer.html';

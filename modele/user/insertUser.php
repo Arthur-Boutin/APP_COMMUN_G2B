@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/../connectToSharedDB.php');
+require_once(PROJECT_ROOT . '/modele/connectToSharedDB.php');
 
 /**
  * @param string $pseudonyme
