@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Temp Control Club</title>
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="../assets/images/logo.ico" type="icon"/>
+</head>
+<body>
+<div class="container container-data">
+    <header>
+        <h1>Affichage des données</h1>
+    </header>
+    <div class="section">
+        <h2> Derniers relevés des capteurs</h2>
+        <div class="actuator-list" id="sensor-reading">
+            <ul class="simple-readings-list">
+                <?php foreach ($lastSensorsReadings as $reading): ?>
+                    <li><?= $reading ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2> Dernières activations des actionneurs</h2>
+        <div class="actuator-list" id="actuator-states">
+            <ul class="simple-readings-list">
+                <?php foreach ($lastActuatorsReadings as $reading): ?>
+                <li><?= $reading ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
