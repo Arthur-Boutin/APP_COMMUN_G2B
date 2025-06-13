@@ -15,7 +15,7 @@ foreach (getSensorsList() as $sensor) {
     $lastReading = getLastReading($sensor['id_objet']);
 
     if ($lastReading !== null) {
-        $formattedDate = new DateTime($lastReading['date_mesure'], new DateTimeZone('UTC'))
+        $formattedDate = (new DateTime($lastReading['date_mesure'], new DateTimeZone('UTC')))
             ->format('d/m/Y à H:i:s');
     }
 
@@ -27,7 +27,7 @@ foreach (getSensorsList() as $sensor) {
 $lastActuatorsReadings = array();
 foreach (getActuatorsList() as $actuator) {
     $lastReading = getLastReading($actuator['id_objet']);
-    $formattedDate = new DateTime($lastReading['date_mesure'], new DateTimeZone('UTC'))
+    $formattedDate = (new DateTime($lastReading['date_mesure'], new DateTimeZone('UTC')))
         ->format('d/m/Y à H:i:s');
 
     $formattedReading = $lastReading ? $actuator['description'] . " - le " . $formattedDate : 'Aucune lecture';
