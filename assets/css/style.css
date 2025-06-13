@@ -87,9 +87,33 @@ header {
     margin-bottom: 2rem;
 }
 
-.header-top-content {
-    padding: 0 2rem; /* Ajoute un peu d'espacement horizontal au contenu du titre */
-    margin-bottom: 0.5rem; /* Réduit la marge si la nav est juste en dessous */
+.header-content {
+    display: flex;
+    justify-content: space-around; /* ou space-between, center, etc. */
+    align-items: center;
+    padding: 1rem 2rem;
+    flex-wrap: wrap; /* Pour que les éléments passent à la ligne sur les petits écrans */
+}
+
+.text-section {
+    flex: 1; /* Prend l'espace disponible */
+    min-width: 300px; /* Largeur minimale pour éviter un texte trop compressé */
+    text-align: left;
+    margin-right: 2rem; /* Espacement avec l'image */
+}
+
+.image-section {
+    margin: 1rem;
+}
+
+.image-section img {
+    max-width: 300px; /* Taille maximale de l'image */
+    height: auto; /* Maintient le ratio d'aspect */
+    transition: transform 0.3s ease
+}
+
+.image-section img:hover {
+    transform: scale(1.05); /* Zoom léger au survol */
 }
 
 .main-navigation {
@@ -100,6 +124,69 @@ header {
 .main-navigation ul {
     /* Les styles existants pour la navigation sont bons */
     /* gap: 0.8rem 1.5rem; -- Peut être ajusté pour l'esthétique dans la barre */
+}
+
+.container-policy, .container-legal-notices, .main-container {
+    width: 60%;
+    max-width: inherit;
+}
+
+.container-policy .section, .container-legal-notices .section {
+    margin: 4% 0;
+}
+
+.main-container {
+    width:100%;
+}
+
+.hero-container {
+    min-height: 80vh !important;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: -1.5%;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: #B1BFB2 0.5px solid;
+}
+
+.main-left-side {
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 40px;
+    margin-left: 5%;
+    width: 43%;
+}
+
+.intro-section {
+    margin-bottom: 15%;
+    padding-top: 10%;
+}
+
+.intro-section h1 {
+    font-size: 2em;
+    margin-bottom: 5%;
+}
+
+.intro-section p {
+    font-size: 1.5rem;
+}
+
+.image-section-main {
+    overflow: hidden;
+}
+
+.image-section-main img {
+    width: 48vw;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.title-capteur-section {
+    margin-bottom: 4% !important;
+}
+
+.header-content{
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 h1 {
@@ -115,11 +202,6 @@ h1 {
 .subtitle {
     color: #a8b2d1;
     font-size: 1.1rem;
-}
-
-.login-section {
-    text-align: center;
-    margin-bottom: 2rem;
 }
 
 .login-btn {
@@ -356,4 +438,65 @@ footer {
     header {
         margin-bottom: 1.5rem;
     }
+}
+
+.capteur-section {
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.capteur-section h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #4facfe;
+    text-shadow: 0 0 10px rgba(79, 172, 254, 0.3);
+}
+
+.capteur-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    gap: 2rem;
+    width: 60%;
+    margin: 2rem auto 3%;
+}
+
+.left-column, .right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.sensor-item {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 2%;
+}
+
+.sensor-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(79, 172, 254, 0.6);
+}
+
+.sensor-item h3 {
+    font-size: 1.5rem;
+    color: #00f2fe;
+    margin-bottom: 1rem;
+}
+
+.sensor-item img {
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+}
+
+.sensor-item p {
+    font-size: 0.9rem;
+    color: #e0e0e0;
 }
