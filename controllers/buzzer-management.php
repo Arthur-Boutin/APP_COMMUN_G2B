@@ -7,6 +7,8 @@ include PROJECT_ROOT . '/config/autoload.php';
 include PROJECT_ROOT . '/modele/peripherals/sensors/getReadings.php';
 include PROJECT_ROOT . '/modele/peripherals/sensors/listSensors.php';
 
+session_start();
+
 $buzzer = Buzzer::getInstance(BUZZER_COM_PORT);
 echo "thres : " . $buzzer->getThreshold();
 echo '<br> dur:' . $buzzer->getBuzzDuration();
