@@ -19,7 +19,7 @@ foreach (getSensorsList() as $sensor) {
             ->format('d/m/Y à H:i:s');
     }
 
-    $formattedReading = $lastReading ? $sensor['description'] . ' : ' . round($lastReading['valeur_mesure'], 2) . " " . $sensor['unite'] . " - le " . $formattedDate : 'Aucun relevé disponible';
+    $formattedReading = $lastReading ? $sensor['description'] . ' : ' . round($lastReading['valeur_mesure'], 2) . " " . $sensor['unite'] . " - le " . $formattedDate : $sensor['description'] . ' : Aucun relevé disponible';
     array_push($lastSensorsReadings, $formattedReading);
 }
 
@@ -30,7 +30,7 @@ foreach (getActuatorsList() as $actuator) {
     $formattedDate = (new DateTime($lastReading['date_mesure'], new DateTimeZone('UTC')))
         ->format('d/m/Y à H:i:s');
 
-    $formattedReading = $lastReading ? $actuator['description'] . " - le " . $formattedDate : 'Aucune lecture';
+    $formattedReading = $lastReading ? $actuator['description'] . " - le " . $formattedDate : $actuator['description'] . ' : Aucun relevé disponible';
     array_push($lastActuatorsReadings, $formattedReading);
 }
 

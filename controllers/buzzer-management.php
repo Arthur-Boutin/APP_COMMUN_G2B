@@ -8,10 +8,11 @@ include PROJECT_ROOT . '/modele/peripherals/sensors/getReadings.php';
 include PROJECT_ROOT . '/modele/peripherals/sensors/listSensors.php';
 
 session_start();
+$errors = array();
 
 $buzzer = Buzzer::getInstance(BUZZER_COM_PORT);
-echo "thres : " . $buzzer->getThreshold();
-echo '<br> dur:' . $buzzer->getBuzzDuration();
+//echo "thres : " . $buzzer->getThreshold();
+//echo '<br> dur:' . $buzzer->getBuzzDuration();
 
 if (isset($_POST) && count($_POST) > 0) {
     // declenchement buzzer
@@ -20,9 +21,9 @@ if (isset($_POST) && count($_POST) > 0) {
             $buzzer->turnOnFor($buzzer->getBuzzDuration());
             $buzzer->turnOff();
             $buzzer->close();
+        } else {
+            $errors['availability'] = "Aucun buzzer n'est connecté ou le port COM est incorrect.";
         }
-        header("Location: ../controllers/buzzer-management.php");
-        exit;
     }
 
     // gere seuil

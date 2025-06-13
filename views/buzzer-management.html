@@ -18,6 +18,16 @@
     </header>
 
     <main>
+        <?php if (!empty($errors)) : ?>
+
+        <?php foreach ($errors as $error): ?>
+        <div class="wrong-signup">
+            <?= $error ?> <br/>
+        </div>
+        <?php endforeach; ?>
+
+        <?php endif; ?>
+
         <div class="push-buzzer">
             <form method="POST" action="">
                 <button type="submit" name="push-buzzer-btn" class="push-buzzer-btn" value="buzzer-pressed">Déclencher</button>
