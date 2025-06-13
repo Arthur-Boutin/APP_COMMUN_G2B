@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion | Temp Control Club</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="../assets/images/logo.ico" type="icon"/>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Page de connexion</h1>
+        <p class="subtitle">Veuillez vous connecter pour accéder à votre espace</p>
+    </header>
+    <main>
+        <form action="#" class="form" method="post">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Votre email..." maxlength="255" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" placeholder="Votre mot de passe..." maxlength="255" required>
+            </div>
+            <button type="submit" class="form-btn">Se connecter</button>
+        </form>
+
+        <?php if (!empty($errors)) : ?>
+
+        <?php foreach ($errors as $error): ?>
+
+        <div class="wrong-login">
+            <?= $error ?> <br/>
+        </div>
+
+        <?php endforeach; ?>
+
+        <?php endif; ?>
+
+        <p class="form-footer-text">Pas encore de compte ? <a href="../controllers/sign-up.php">Créer un compte</a></p>
+    </main>
+</div>
+</body>
+</html>

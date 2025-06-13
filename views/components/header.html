@@ -1,0 +1,18 @@
+<header class="navbar">
+    <div class="header-top-content">
+        <h1>Temp Control Club</h1>
+        <p class="subtitle">Système de surveillance de température</p>
+    </div>
+    <nav class="main-navigation">
+        <ul>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="../controllers/buzzer-management.php">Gestion du buzzer</a></li>
+            <li><a href="../controllers/data-display.php">Affichage des données</a></li>
+            <?php if (isset($_SESSION['username'])): ?>
+                <li><a href="../controllers/log-out.php">Déconnexion</a></li>
+            <?php else: ?>
+                <li><a href="../controllers/log-in.php">Connexion</a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+</header>
