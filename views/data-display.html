@@ -7,34 +7,165 @@
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" href="../assets/images/logo.ico" type="icon"/>
+    <!-- Intégration de la bibliothèque Chart.js pour les graphiques -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
 <div class="container container-data">
     <header>
         <h1>Affichage des données</h1>
     </header>
-    <div class="section">
-        <h2> Derniers relevés des capteurs</h2>
-        <div class="actuator-list" id="sensor-reading">
-            <ul class="simple-readings-list">
-                <?php foreach ($lastSensorsReadings as $reading): ?>
-                    <li><?= $reading ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    </div>
 
-    <div class="section">
-        <h2> Dernières activations des actionneurs</h2>
-        <div class="actuator-list" id="actuator-states">
-            <ul class="simple-readings-list">
-                <?php foreach ($lastActuatorsReadings as $reading): ?>
-                <li><?= $reading ?></li>
-                <?php endforeach; ?>
-            </ul>
+    <main>
+        <!-- Bouton de bascule entre la vue liste et la vue cartes -->
+        <div class="toggle-container">
+            <button id="toggleViewBtn" class="form-btn">Passer à la vue Cartes</button>
         </div>
-    </div>
+
+        <!-- Vue Liste (Par défaut, donc pas de classe 'hidden' ici) -->
+        <div id="listView" class="section">
+            <h2>Derniers relevés des capteurs</h2>
+            <div class="actuator-list" id="sensor-reading-list">
+                <ul class="simple-readings-list">
+                    <?php foreach ($lastSensorsReadings as $reading): ?>
+                        <li><?= htmlspecialchars($reading) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+
+            <h2>Dernières activations des actionneurs</h2>
+            <div class="actuator-list" id="actuator-states-list">
+                <ul class="simple-readings-list">
+                    <?php foreach ($lastActuatorsReadings as $reading): ?>
+                        <li><?= htmlspecialchars($reading) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Vue Cartes (Initialement masquée avec la classe 'hidden') -->
+        <div id="buttonView" class="section hidden">
+            <h2>Capteurs</h2>
+            <div class="data-buttons-grid">
+                <?php foreach ($lastSensorsReadings as $readingString):
+                    // Extrait la description du capteur de la chaîne pour le titre de la carte
+                    preg_match('/^(.*?)\s*:/', $readingString, $matches);
+                    $description = isset($matches[1]) ? trim($matches[1]) : 'Capteur Inconnu';
+                ?>
+                    <div class="data-display-card">
+                        <h3><?= htmlspecialchars($description) ?></h3>
+                        <p class="data-value-full"><?= htmlspecialchars($readingString) ?></p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <h2>Actionneurs</h2>
+            <div class="data-buttons-grid">
+                <?php foreach ($lastActuatorsReadings as $readingString):
+                    // Extrait la description de l'actionneur de la chaîne pour le titre de la carte
+                    preg_match('/^(.*?)\s*-/', $readingString, $matches);
+                    $description = isset($matches[1]) ? trim($matches[1]) : 'Actionneur Inconnu';
+                ?>
+                    <div class="data-display-card">
+                        <h3><?= htmlspecialchars($description) ?></h3>
+                        <p class="data-value-full"><?= htmlspecialchars($readingString) ?></p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
+        <!-- Section pour les Graphiques -->
+        <div class="section">
+            <h2>Historique des Températures</h2>
+            <div class="chart-container">
+                <canvas id="temperatureChart"></canvas>
+            </div>
+        </div>
+    </main>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Logique de bascule entre les vues Liste et Cartes
+        const toggleViewBtn = document.getElementById('toggleViewBtn');
+        const listView = document.getElementById('listView');
+        const buttonView = document.getElementById('buttonView'); 
+        let isListView = true; // L'état initial est la vue liste
+
+        // Initialisation du texte du bouton selon la vue par défaut
+        toggleViewBtn.textContent = 'Passer à la vue Cartes';
+
+        toggleViewBtn.addEventListener('click', () => {
+            if (isListView) {
+                // Si la vue actuelle est la liste, passer aux cartes
+                listView.classList.add('hidden');
+                buttonView.classList.remove('hidden');
+                toggleViewBtn.textContent = 'Passer à la vue Liste'; // Le bouton propose de revenir à la liste
+            } else {
+                // Si la vue actuelle est les cartes, passer à la liste
+                listView.classList.remove('hidden');
+                buttonView.classList.add('hidden');
+                toggleViewBtn.textContent = 'Passer à la vue Cartes'; // Le bouton propose de passer aux cartes
+            }
+            isListView = !isListView; // Inverse l'état
+        });
+
+        // Intégration de Chart.js
+        // Pour la démonstration, nous utilisons des données fictives.
+        // En production, vous devrez récupérer ces données via des requêtes AJAX à votre backend PHP.
+
+        // Données fictives pour le graphique de température
+        const tempLabels = ['10:00', '10:15', '10:30', '10:45', '11:00', '11:15', '11:30', '11:45', '12:00'];
+        const tempData = [22.5, 23.1, 22.8, 23.5, 24.0, 23.8, 24.2, 24.5, 24.1];
+
+        const tempCtx = document.getElementById('temperatureChart').getContext('2d');
+        const temperatureChart = new Chart(tempCtx, {
+            type: 'line', // Type de graphique linéaire
+            data: {
+                labels: tempLabels,
+                datasets: [{
+                    label: 'Température (°C)',
+                    data: tempData,
+                    borderColor: 'rgba(75, 192, 192, 1)', // Couleur de la ligne
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Couleur de remplissage sous la ligne
+                    tension: 0.4, // Courbure de la ligne
+                    fill: true // Remplir la zone sous la ligne
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Permet de définir la taille du conteneur indépendamment
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)' // Couleur des lignes de grille X
+                        },
+                        ticks: {
+                            color: '#fff' // Couleur des étiquettes de l'axe X
+                        }
+                    },
+                    y: {
+                        beginAtZero: false, // Ne pas commencer l'axe Y à zéro
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)' // Couleur des lignes de grille Y
+                        },
+                        ticks: {
+                            color: '#fff' // Couleur des étiquettes de l'axe Y
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#fff' // Couleur du texte de la légende
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

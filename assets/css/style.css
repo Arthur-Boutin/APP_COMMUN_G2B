@@ -331,6 +331,92 @@ footer {
     text-decoration: underline;
 }
 
+/* Styles pour masquer les éléments */
+.hidden {
+    display: none !important;
+}
+
+/* Conteneur du bouton de bascule */
+.toggle-container {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.toggle-container .form-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    /* Assurez-vous que les styles existants de .form-btn sont appliqués */
+}
+
+/* Grille pour les cartes de données */
+.data-buttons-grid { /* J'ai conservé ce nom car il définit la grille pour les "boutons" qui sont maintenant des cartes */
+    display: grid;
+    /* Ajuste le nombre de colonnes en fonction de la largeur disponible */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem; /* Espacement entre les cartes */
+    margin-top: 1.5rem;
+}
+
+/* Style des cartes individuelles de données (anciennement .data-button) */
+.data-display-card {
+    background: rgba(255, 255, 255, 0.08); /* Effet verre dépoli légèrement plus clair */
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    color: #fff;
+    /* Suppression du curseur et des effets de survol spécifiques aux boutons */
+    transition: all 0.3s ease; /* Conserve une transition douce pour d'éventuels changements */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pour espacer le contenu verticalement */
+    height: auto; /* Permet aux cartes de s'adapter au contenu */
+}
+
+/* Vous pouvez ajouter un léger effet de survol si vous le souhaitez, sans le curseur pointer */
+.data-display-card:hover {
+    background: rgba(255, 255, 255, 0.12); /* Un peu plus lumineux au survol */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5); /* Une ombre légèrement plus prononcée */
+}
+
+
+.data-display-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+    color: #4facfe; /* Couleur d'accentuation pour les titres */
+}
+
+/* Nouvelle classe pour afficher le texte complet sur la carte */
+.data-value-full {
+    font-size: 1rem; /* Taille de police pour le texte complet */
+    font-weight: normal;
+    margin-bottom: 0;
+    color: #e0e0e0; /* Couleur de texte plus neutre */
+    word-wrap: break-word; /* Permet de casser les mots longs */
+    white-space: normal; /* S'assure que le texte se retourne à la ligne */
+}
+
+
+/* Styles pour les conteneurs de graphiques */
+.chart-container {
+    position: relative;
+    height: 400px; /* Hauteur fixe pour les graphiques */
+    width: 100%;
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 1.5rem; /* Remplissage interne pour le graphique */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 @media (max-width: 600px) {
     .info-section {
         grid-template-columns: 1fr;
@@ -355,5 +441,26 @@ footer {
 
     header {
         margin-bottom: 1.5rem;
+    }
+
+    .data-buttons-grid { /* Affecte la grille de cartes maintenant */
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Moins de colonnes sur mobile */
+        gap: 1rem;
+    }
+
+    .data-display-card { /* Affecte les cartes individuelles maintenant */
+        padding: 1rem;
+    }
+
+    .data-display-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .data-value-full {
+        font-size: 0.9rem; /* Taille de police plus petite sur mobile */
+    }
+
+    .chart-container {
+        height: 300px; /* Réduire la hauteur des graphiques sur mobile */
     }
 }
