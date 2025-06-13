@@ -13,11 +13,15 @@ class Buzzer
     private string $comPort;
     private int $baudRate;
     private $handle;
+    private int $buzzDuration;
+    private int $threshold;
 
-    private function __construct(string $comPort, int $baudRate = 115200) // 115200 est baud rate pour connexion USB Serial
+    private function __construct(string $comPort, int $baudRate = 115200, int $buzzDuration = 1, int $threshold = 53) // 115200 est baud rate pour connexion USB Serial
     {
         $this->comPort = "\\\\.\\" . $comPort;
         $this->baudRate = $baudRate;
+        $this->buzzDuration = $buzzDuration;
+        $this->threshold = $threshold;
     }
 
     public static function getInstance(string $comPort): Buzzer
@@ -98,5 +102,61 @@ class Buzzer
             fclose($this->handle);
             $this->handle = null;
         }
+    }
+
+    public function getComPort(): string
+    {
+        return $this->comPort;
+    }
+
+    public function setComPort(string $comPort): void
+    {
+        $this->comPort = $comPort;
+    }
+
+    public function getBaudRate(): int
+    {
+        return $this->baudRate;
+    }
+
+    public function setBaudRate(int $baudRate): void
+    {
+        $this->baudRate = $baudRate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHandle()
+    {
+        return $this->handle;
+    }
+
+    /**
+     * @param mixed $handle
+     */
+    public function setHandle($handle): void
+    {
+        $this->handle = $handle;
+    }
+
+    public function getBuzzDuration(): int
+    {
+        return $this->buzzDuration;
+    }
+
+    public function setBuzzDuration(int $buzzDuration): void
+    {
+        $this->buzzDuration = $buzzDuration;
+    }
+
+    public function getThreshold(): int
+    {
+        return $this->threshold;
+    }
+
+    public function setThreshold(int $threshold): void
+    {
+        $this->threshold = $threshold;
     }
 }
