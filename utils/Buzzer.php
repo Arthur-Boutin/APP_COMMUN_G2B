@@ -85,7 +85,7 @@ class Buzzer
     {
         $activation = getLastActivation();
 
-        $formattedDate = new DateTime($activation['date_mesure'], new DateTimeZone('UTC'))
+        $formattedDate = (new DateTime($activation['date_mesure'], new DateTimeZone('UTC')))
             ->setTimezone(new DateTimeZone('Europe/Paris'))
             ->format('d/m/Y à H:i:s');
 
