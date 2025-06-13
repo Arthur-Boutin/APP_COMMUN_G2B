@@ -23,10 +23,10 @@
             <button id="toggleViewBtn" class="form-btn">Passer à la vue Cartes</button>
         </div>
 
-        <!-- Vue Liste (Par défaut, donc pas de classe 'hidden' ici) -->
+        <!-- Vue Liste -->
         <div id="listView" class="section">
             <h2>Derniers relevés des capteurs</h2>
-            <div class="actuator-list" id="sensor-reading-list">
+            <div class="actuator-list" id="sensor-reading">
                 <ul class="simple-readings-list">
                     <?php foreach ($lastSensorsReadings as $reading): ?>
                         <li><?= htmlspecialchars($reading) ?></li>
@@ -35,7 +35,7 @@
             </div>
 
             <h2>Dernières activations des actionneurs</h2>
-            <div class="actuator-list" id="actuator-states-list">
+            <div class="actuator-list" id="actuator-states">
                 <ul class="simple-readings-list">
                     <?php foreach ($lastActuatorsReadings as $reading): ?>
                         <li><?= htmlspecialchars($reading) ?></li>
@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <!-- Vue Cartes (Initialement masquée avec la classe 'hidden') -->
+        <!-- Vue Cartes -->
         <div id="buttonView" class="section hidden">
             <h2>Capteurs</h2>
             <div class="data-buttons-grid">
