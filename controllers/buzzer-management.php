@@ -1,6 +1,7 @@
 <?php
 
 use utils\Buzzer;
+use utils\FileReader;
 
 require_once '../config/constants.php';
 include PROJECT_ROOT . '/config/autoload.php';
@@ -11,8 +12,7 @@ session_start();
 $errors = array();
 
 $buzzer = Buzzer::getInstance(BUZZER_COM_PORT);
-//echo "thres : " . $buzzer->getThreshold();
-//echo '<br> dur:' . $buzzer->getBuzzDuration();
+$fileReader = FileReader::getInstance();
 
 if (isset($_POST) && count($_POST) > 0) {
     // declenchement buzzer
@@ -30,6 +30,11 @@ if (isset($_POST) && count($_POST) > 0) {
     if (isset($_POST['threshold'])) {
         $threshold = intval($_POST['threshold']);
         $buzzer->setThreshold($threshold);
+        try {
+            $fileReader->write("threshold", $threshold);
+        } catch (Exception $e) {
+
+        }
         echo json_encode(['success' => true, 'threshold' => $buzzer->getThreshold()]);
         exit;
     }
@@ -38,12 +43,13 @@ if (isset($_POST) && count($_POST) > 0) {
     if (isset($_POST['buzzDuration'])) {
         $buzzDuration = intval($_POST['buzzDuration']);
         $buzzer->setBuzzDuration($buzzDuration);
+        $fileReader->write("duration", $buzzDuration);
         echo json_encode(['success' => true, 'buzzDuration' => $buzzer->getBuzzDuration()]);
         exit;
     }
 }
 
-$lastSensorsReadings = null;
+$lastTemperatureReading = null;
 foreach (getSensorsList() as $sensor) {
     if ($sensor['nom'] === 'dht_temp') {
         $lastReading = getLastReading($sensor['id_objet']);

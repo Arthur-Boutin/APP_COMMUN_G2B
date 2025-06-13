@@ -1,11 +1,13 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const thresholdSlider = document.getElementById("threshold-slider");
     const thresholdValue = document.getElementById("threshold-value");
     const durationSlider = document.getElementById("duration-slider");
     const durationValue = document.getElementById("buzz-duration-value");
+    let duration = durationSlider.value;
+    let interval;
 
     if (thresholdSlider && thresholdValue) {
-        thresholdSlider.oninput = function() {
+        thresholdSlider.oninput = function () {
             const threshold = this.value;
             thresholdValue.textContent = threshold + "°C";
 
@@ -34,9 +36,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (durationSlider && durationValue) {
-        durationSlider.oninput = function() {
-            const duration = this.value;
+        durationSlider.oninput = function () {
+            duration = this.value;
             durationValue.textContent = duration + " sec";
+            redefineInterval();
 
             fetch('../controllers/buzzer-management.php', {
                 method: 'POST',
@@ -45,14 +48,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: 'buzzDuration=' + encodeURIComponent(duration)
             })
-                .then(response => response.json())
+                .then(response => response.text())
                 .then(data => {
-                    if (data.success) {
-                        console.log('Buzz duration updated successfully');
-                        console.log(data.buzzDuration);
-                    } else {
-                        console.error('Failed to update buzz duration');
-                    }
+                    console.log(data)
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -60,5 +58,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     } else {
         console.error("Buzz duration slider or buzz duration value element not found.");
+    }
+
+    fetch('../utils/launchBuzzer.php');
+    redefineInterval();
+
+    function redefineInterval() {
+        if (interval) {
+            clearInterval(interval);
+        }
+        setInterval(
+            () => {
+                fetch('../utils/launchBuzzer.php')
+            }, 1000 * (5 + +duration));
     }
 });

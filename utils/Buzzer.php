@@ -16,7 +16,7 @@ class Buzzer
     private int $buzzDuration;
     private int $threshold;
 
-    private function __construct(string $comPort, int $baudRate = 115200, int $buzzDuration = 1, int $threshold = 53) // 115200 est baud rate pour connexion USB Serial
+    private function __construct(string $comPort, int $baudRate = 115200, int $buzzDuration = 1, int $threshold = 30) // 115200 est baud rate pour connexion USB Serial
     {
         $this->comPort = "\\\\.\\" . $comPort;
         $this->baudRate = $baudRate;
@@ -142,7 +142,7 @@ class Buzzer
 
     public function getBuzzDuration(): int
     {
-        return $this->buzzDuration;
+        return FileReader::getInstance()->read("duration");
     }
 
     public function setBuzzDuration(int $buzzDuration): void
@@ -152,7 +152,7 @@ class Buzzer
 
     public function getThreshold(): int
     {
-        return $this->threshold;
+        return FileReader::getInstance()->read("threshold");
     }
 
     public function setThreshold(int $threshold): void
