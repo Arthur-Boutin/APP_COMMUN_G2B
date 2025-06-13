@@ -10,18 +10,58 @@
 </head>
 <body>
 <div class="container">
-    <main>
-        <div class="login-section">
-            <a href="../controllers/log-in.php">
-                <button class="login-btn">Connexion</button>
-            </a>
+    <div class="header-content">
+        <div class="text-section">
+            <p class="subtitle" style="font-size: 23px">
+                Bienvenue sur le site de Temp Control Club ! <br/><br/>
+                Ici le Groupe G2B vous affiche les l'activation du buzzer en fonction
+                de température ou son élevé.<br/><br/>
+            </p>
+            <div class="login-section">
+                <a href="../controllers/log-in.php">
+                    <button class="login-btn">Connexion</button>
+                </a>
+            </div>
         </div>
-
-        <p class="subtitle" style="font-size: 23px">
-            Bienvenue sur le site de Temp Control Club ! <br/><br/>
-            Ici le Groupe G2B vous affiche les l'activation du buzzer en fonction
-            de température ou son élevé.
-        </p>
+        <div class="image-section">
+            <img src="../assets/images/illustration_buzzer.png">
+        </div>
+    </div>
+    <main>
+        <div class="capteur-section">
+            <h2>Nos capteur</h2>
+            <div class="capteur-content">
+                <div class="left-column">
+                    <div class="sensor-item">
+                        <h3>Capteur température</h3>
+                        <img src="../assets/images/temp_sensor.png" alt="Capteur de température">
+                        <p>Capteur de température pour la carte TIVA, détecte les variations de chaleur.</p>
+                    </div>
+                    <div class="sensor-item">
+                        <h3>Capteur humidité</h3>
+                        <img src="../assets/images/humidity_sensor.png" alt="Capteur d'humidité">
+                        <p>Capteur d'humidité pour la carte TIVA, mesure le taux d'humidité ambiant.</p>
+                    </div>
+                    <div class="sensor-item">
+                        <h3>Capteur de lumière</h3>
+                        <img src="../assets/images/light_sensor.png" alt="Capteur de lumière">
+                        <p>Capteur de lumière pour la carte TIVA, réagit à l'intensité lumineuse.</p>
+                    </div>
+                </div>
+                <div class="right-column">
+                    <div class="sensor-item">
+                        <h3>Capteur de distance</h3>
+                        <img src="../assets/images/distance_sensor.png" alt="Capteur de distance">
+                        <p>Capteur de distance pour la carte TIVA, calcule la distance d'un objet.</p>
+                    </div>
+                    <div class="sensor-item">
+                        <h3>Capteur son</h3>
+                        <img src="../assets/images/sound_sensor.png" alt="Capteur de son">
+                        <p>Capteur de son pour la carte TIVA, perçoit les niveaux sonores.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 </div>
 </body>
