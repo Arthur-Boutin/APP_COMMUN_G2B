@@ -77,95 +77,46 @@
 
         <!-- Section pour les Graphiques -->
         <div class="section">
-            <h2>Historique des Températures</h2>
-            <div class="chart-container">
+            <h2>Historique des Capteurs</h2>
+            <div class="toggle-container">
+                <button id="toggleTemperatureChartBtn" class="form-btn">Masquer le graphique de Température</button>
+            </div>
+            <div class="chart-container" id="temperatureChartContainer">
                 <canvas id="temperatureChart"></canvas>
+            </div>
+
+            <div class="toggle-container">
+                <button id="toggleHumidityChartBtn" class="form-btn">Masquer le graphique d'Humidité</button>
+            </div>
+            <div class="chart-container" id="humidityChartContainer">
+                <canvas id="humidityChart"></canvas>
+            </div>
+
+            <div class="toggle-container">
+                <button id="toggleLightChartBtn" class="form-btn">Masquer le graphique de Luminosité</button>
+            </div>
+            <div class="chart-container" id="lightChartContainer">
+                <canvas id="lightChart"></canvas>
+            </div>
+
+            <div class="toggle-container">
+                <button id="toggleDistanceChartBtn" class="form-btn">Masquer le graphique de Distance</button>
+            </div>
+            <div class="chart-container" id="distanceChartContainer">
+                <canvas id="distanceChart"></canvas>
+            </div>
+
+            <div class="toggle-container">
+                <button id="toggleSoundChartBtn" class="form-btn">Masquer le graphique de Son</button>
+            </div>
+            <div class="chart-container" id="soundChartContainer">
+                <canvas id="soundChart"></canvas>
             </div>
         </div>
     </main>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Logique de bascule entre les vues Liste et Cartes
-        const toggleViewBtn = document.getElementById('toggleViewBtn');
-        const listView = document.getElementById('listView');
-        const buttonView = document.getElementById('buttonView'); 
-        let isListView = true; // L'état initial est la vue liste
-
-        // Initialisation du texte du bouton selon la vue par défaut
-        toggleViewBtn.textContent = 'Passer à la vue Cartes';
-
-        toggleViewBtn.addEventListener('click', () => {
-            if (isListView) {
-                // Si la vue actuelle est la liste, passer aux cartes
-                listView.classList.add('hidden');
-                buttonView.classList.remove('hidden');
-                toggleViewBtn.textContent = 'Passer à la vue Liste'; // Le bouton propose de revenir à la liste
-            } else {
-                // Si la vue actuelle est les cartes, passer à la liste
-                listView.classList.remove('hidden');
-                buttonView.classList.add('hidden');
-                toggleViewBtn.textContent = 'Passer à la vue Cartes'; // Le bouton propose de passer aux cartes
-            }
-            isListView = !isListView; // Inverse l'état
-        });
-
-        // Intégration de Chart.js
-        // Pour la démonstration, nous utilisons des données fictives.
-        // En production, vous devrez récupérer ces données via des requêtes AJAX à votre backend PHP.
-
-        // Données fictives pour le graphique de température
-        const tempLabels = ['10:00', '10:15', '10:30', '10:45', '11:00', '11:15', '11:30', '11:45', '12:00'];
-        const tempData = [22.5, 23.1, 22.8, 23.5, 24.0, 23.8, 24.2, 24.5, 24.1];
-
-        const tempCtx = document.getElementById('temperatureChart').getContext('2d');
-        const temperatureChart = new Chart(tempCtx, {
-            type: 'line', // Type de graphique linéaire
-            data: {
-                labels: tempLabels,
-                datasets: [{
-                    label: 'Température (°C)',
-                    data: tempData,
-                    borderColor: 'rgba(75, 192, 192, 1)', // Couleur de la ligne
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Couleur de remplissage sous la ligne
-                    tension: 0.4, // Courbure de la ligne
-                    fill: true // Remplir la zone sous la ligne
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, // Permet de définir la taille du conteneur indépendamment
-                scales: {
-                    x: {
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)' // Couleur des lignes de grille X
-                        },
-                        ticks: {
-                            color: '#fff' // Couleur des étiquettes de l'axe X
-                        }
-                    },
-                    y: {
-                        beginAtZero: false, // Ne pas commencer l'axe Y à zéro
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)' // Couleur des lignes de grille Y
-                        },
-                        ticks: {
-                            color: '#fff' // Couleur des étiquettes de l'axe Y
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#fff' // Couleur du texte de la légende
-                        }
-                    }
-                }
-            }
-        });
-    });
-</script>
+<script src="../assets/js/data-button-graphics.js"></script>
 
 </body>
 </html>
