@@ -126,6 +126,69 @@ header {
     /* gap: 0.8rem 1.5rem; -- Peut être ajusté pour l'esthétique dans la barre */
 }
 
+.container-policy, .container-legal-notices, .main-container {
+    width: 60%;
+    max-width: inherit;
+}
+
+.container-policy .section, .container-legal-notices .section {
+    margin: 4% 0;
+}
+
+.main-container {
+    width:100%;
+}
+
+.hero-container {
+    min-height: 80vh !important;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: -1.5%;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: #B1BFB2 0.5px solid;
+}
+
+.main-left-side {
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 40px;
+    margin-left: 5%;
+    width: 43%;
+}
+
+.intro-section {
+    margin-bottom: 15%;
+    padding-top: 10%;
+}
+
+.intro-section h1 {
+    font-size: 2em;
+    margin-bottom: 5%;
+}
+
+.intro-section p {
+    font-size: 1.5rem;
+}
+
+.image-section-main {
+    overflow: hidden;
+}
+
+.image-section-main img {
+    width: 48vw;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.title-capteur-section {
+    margin-bottom: 4% !important;
+}
+
+.header-content{
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 h1 {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
@@ -390,10 +453,12 @@ footer {
 }
 
 .capteur-content {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     justify-content: center;
     gap: 2rem;
-    flex-wrap: wrap;
+    width: 60%;
+    margin: 2rem auto 3%;
 }
 
 .left-column, .right-column {
@@ -410,6 +475,7 @@ footer {
     border: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 2%;
 }
 
 .sensor-item:hover {
