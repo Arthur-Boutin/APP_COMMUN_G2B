@@ -1,132 +1,133 @@
 <?php
+// Ce fichier PHP sera le point d'API pour récupérer les données des graphiques en JSON
 
-// Assurez-vous que le chemin vers constants.php est correct par rapport à l'emplacement de ce fichier.
+// Activer l'affichage des erreurs pour le débogage (à désactiver en production)
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once '../config/constants.php';
-// Incluez votre autoload.php pour charger les classes ou fonctions nécessaires.
 include PROJECT_ROOT . '/config/autoload.php';
+include PROJECT_ROOT . '/modele/peripherals/sensors/getReadings.php';
+include PROJECT_ROOT . '/modele/peripherals/sensors/listSensors.php';
+include PROJECT_ROOT . '/modele/peripherals/actuators/listActuators.php'; // Inclure si les actionneurs ont des relevés à afficher
+include PROJECT_ROOT . '/modele/peripherals/actuators/getActivations.php'; // Spécifique au buzzer
 
-// Incluez les fichiers qui contiennent connectToSharedDB, getSensorsList et getActuatorsList.
-// Assurez-vous que ces chemins sont corrects.
-require_once PROJECT_ROOT . '/modele/connectToSharedDB.php'; // Contient connectToSharedDB()
-require_once PROJECT_ROOT . '/modele/peripherals/sensors/listSensors.php'; // Contient getSensorsList()
-require_once PROJECT_ROOT . '/modele/peripherals/actuators/listActuators.php'; // Contient getActuatorsList()
-
-// Définit le type de contenu de la réponse comme JSON
+// Définir l'en-tête pour indiquer que la réponse est du JSON
 header('Content-Type: application/json');
 
-/**
- * Récupère les mesures historiques pour un ID d'objet donné.
- *
- * @param int $idObjet L'ID du capteur ou de l'actionneur.
- * @param int $limit Le nombre maximum de relevés historiques à récupérer.
- * @return array Un tableau de tableaux associatifs, chacun contenant 'valeur_mesure' et 'date_mesure'.
- */
-function getHistoricalReadings(int $idObjet, int $limit = 10): array
-{
-    try {
-        $pdo = connectToSharedDB();
-        // Requête pour récupérer les 'valeur_mesure' et 'date_mesure' pour un 'id_objet' donné.
-        // ORDER BY date_mesure DESC LIMIT :limit; va récupérer les plus récents en premier.
-        $sql = "SELECT valeur_mesure, date_mesure FROM `mesures` WHERE id_objet=:idObjet ORDER BY date_mesure DESC LIMIT :limit;";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':idObjet', $idObjet, PDO::PARAM_INT);
-        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-        $stmt->execute();
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $stmt->closeCursor();
+$chartData = [
+    'temperature' => ['labels' => [], 'data' => []],
+    'humidity' => ['labels' => [], 'data' => []],
+    'light' => ['labels' => [], 'data' => []],
+    'distance' => ['labels' => [], 'data' => []],
+    'sound' => ['labels' => [], 'data' => []],
+    'buzzer' => ['labels' => [], 'data' => []],
+];
 
-        // Inverse le tableau pour que les données les plus anciennes apparaissent en premier sur le graphique.
-        return array_reverse($results);
+// Définir une limite pour le nombre de points de données pour les graphiques
+$chartDataLimit = 30; // Récupérer les 30 dernières mesures pour chaque capteur
 
-    } catch (PDOException $e) {
-        // Enregistre l'erreur dans les logs du serveur.
-        return [];
+// Récupérer les ID d'objet des capteurs (nécessaire pour l'API)
+$sensorsList = getSensorsList();
+$sensorDescriptionsToIds = [];
+foreach ($sensorsList as $sensor) {
+    $sensorDescriptionsToIds[$sensor['description']] = $sensor['id_objet'];
+}
+
+// Récupérer et formater les données pour chaque type de capteur
+// Les IDs d'objet (id_objet) devront correspondre à votre base de données réelle
+// ID 1: Température, ID 2: Humidité, ID 3: Luminosité, ID 4: Distance, ID 5: Son
+// ID 6: Buzzer (activation)
+
+// Température
+$tempReadings = getSensorReadings($sensorDescriptionsToIds['Temperature'] ?? 1, $chartDataLimit);
+if ($tempReadings) {
+    usort($tempReadings, function($a, $b) {
+        return strtotime($a['date_mesure']) - strtotime($b['date_mesure']);
+    });
+    foreach ($tempReadings as $reading) {
+        $chartData['temperature']['labels'][] = (new DateTime($reading['date_mesure'], new DateTimeZone('UTC')))->format('d/m H:i:s');
+        $chartData['temperature']['data'][] = round($reading['valeur_mesure'], 2);
+    }
+}
+// Humidité
+$humidityReadings = getSensorReadings($sensorDescriptionsToIds['Humidité'] ?? 2, $chartDataLimit);
+if ($humidityReadings) {
+    usort($humidityReadings, function($a, $b) {
+        return strtotime($a['date_mesure']) - strtotime($b['date_mesure']);
+    });
+    foreach ($humidityReadings as $reading) {
+        $chartData['humidity']['labels'][] = (new DateTime($reading['date_mesure'], new DateTimeZone('UTC')))->format('d/m H:i:s');
+        $chartData['humidity']['data'][] = round($reading['valeur_mesure'], 2);
+    }
+}
+// Luminosité
+$lightReadings = getSensorReadings($sensorDescriptionsToIds['Luminosité'] ?? 3, $chartDataLimit);
+if ($lightReadings) {
+    usort($lightReadings, function($a, $b) {
+        return strtotime($a['date_mesure']) - strtotime($b['date_mesure']);
+    });
+    foreach ($lightReadings as $reading) {
+        $chartData['light']['labels'][] = (new DateTime($reading['date_mesure'], new DateTimeZone('UTC')))->format('d/m H:i:s');
+        $chartData['light']['data'][] = round($reading['valeur_mesure'], 2);
+    }
+}
+// Distance
+$distanceReadings = getSensorReadings($sensorDescriptionsToIds['Distance'] ?? 4, $chartDataLimit);
+if ($distanceReadings) {
+    usort($distanceReadings, function($a, $b) {
+        return strtotime($a['date_mesure']) - strtotime($b['date_mesure']);
+    });
+    foreach ($distanceReadings as $reading) {
+        $chartData['distance']['labels'][] = (new DateTime($reading['date_mesure'], new DateTimeZone('UTC')))->format('d/m H:i:s');
+        $chartData['distance']['data'][] = round($reading['valeur_mesure'], 2);
+    }
+}
+// Son
+$soundReadings = getSensorReadings($sensorDescriptionsToIds['Son'] ?? 5, $chartDataLimit);
+if ($soundReadings) {
+    usort($soundReadings, function($a, $b) {
+        return strtotime($a['date_mesure']) - strtotime($b['date_mesure']);
+    });
+    foreach ($soundReadings as $reading) {
+        $chartData['sound']['labels'][] = (new DateTime($reading['date_mesure'], new DateTimeZone('UTC')))->format('d/m H:i:s');
+        $chartData['sound']['data'][] = round($reading['valeur_mesure'], 2);
     }
 }
 
-$chartData = [];
+// Buzzer Activations - Compter l'activation heure par heure
+$buzzerActivations = getActivations($chartDataLimit);
+if ($buzzerActivations) {
+    usort($buzzerActivations, function($a, $b) {
+        return strtotime($a['date_mesure']) - strtotime($b['date_mesure']);
+    });
 
-// Obtient la liste de tous les capteurs et actionneurs pour mapper les descriptions aux ID.
-$sensors = getSensorsList();
-$actuators = getActuatorsList();
+    $hourlyActivations = [];
+    foreach ($buzzerActivations as $activation) {
+        $dateTime = new DateTime($activation['date_mesure'], new DateTimeZone('UTC'));
+        // Utiliser le format 'd/m H:00' pour regrouper par heure sur des jours différents
+        $hourLabel = $dateTime->format('d/m H:00'); 
 
-$sensorIdMap = [];
-foreach ($sensors as $sensor) {
-    $sensorIdMap[$sensor['description']] = (int)$sensor['id_objet'];
-}
-
-$actuatorIdMap = [];
-foreach ($actuators as $actuator) {
-    $actuatorIdMap[$actuator['description']] = (int)$actuator['id_objet'];
-}
-
-// --- Récupération des données pour chaque type de graphique ---
-// Pour la température
-$tempId = $sensorIdMap['Capteur de Température'] ?? null; // REMPLACEZ 'Capteur de Température' par la description réelle.
-if ($tempId) {
-    $history = getHistoricalReadings($tempId, 10);
-    $labels = [];
-    $dataPoints = [];
-    foreach ($history as $record) {
-        $labels[] = (new DateTime($record['date_mesure']))->format('d/m H:i');
-        $dataPoints[] = (float)$record['valeur_mesure'];
+        if (!isset($hourlyActivations[$hourLabel])) {
+            $hourlyActivations[$hourLabel] = 0;
+        }
+        $hourlyActivations[$hourLabel]++;
     }
-    $chartData['temperature'] = ['labels' => $labels, 'data' => $dataPoints];
-}
 
-// Pour l'humidité
-$humidityId = $sensorIdMap['Capteur d\'Humidité'] ?? null; // REMPLACEZ 'Capteur d\'Humidité' par la description réelle.
-if ($humidityId) {
-    $history = getHistoricalReadings($humidityId, 10);
-    $labels = [];
-    $dataPoints = [];
-    foreach ($history as $record) {
-        $labels[] = (new DateTime($record['date_mesure']))->format('d/m H:i');
-        $dataPoints[] = (float)$record['valeur_mesure'];
+    // Convertir les données agrégées en format Chart.js
+    foreach ($hourlyActivations as $label => $count) {
+        $chartData['buzzer']['labels'][] = $label;
+        $chartData['buzzer']['data'][] = $count;
     }
-    $chartData['humidity'] = ['labels' => $labels, 'data' => $dataPoints];
 }
 
-// Pour la luminosité
-$lightId = $sensorIdMap['Capteur de Luminosité'] ?? null; // REMPLACEZ 'Capteur de Luminosité' par la description réelle.
-if ($lightId) {
-    $history = getHistoricalReadings($lightId, 10);
-    $labels = [];
-    $dataPoints = [];
-    foreach ($history as $record) {
-        $labels[] = (new DateTime($record['date_mesure']))->format('d/m H:i');
-        $dataPoints[] = (float)$record['valeur_mesure'];
-    }
-    $chartData['light'] = ['labels' => $labels, 'data' => $dataPoints];
+// Encoder les données des graphiques en JSON et les afficher
+try {
+    echo json_encode($chartData, JSON_THROW_ON_ERROR);
+} catch (JsonException $e) {
+    // En cas d'erreur, renvoyer un JSON d'erreur
+    http_response_code(500); // Définir un code de statut HTTP 500 pour indiquer une erreur serveur
+    echo json_encode(['error' => 'Erreur lors de l\'encodage JSON des données: ' . $e->getMessage()]);
+    error_log("Erreur d'encodage JSON dans get_chart_data.php: " . $e->getMessage());
 }
-
-// Pour la distance
-$distanceId = $sensorIdMap['Capteur de Distance'] ?? null; // REMPLACEZ 'Capteur de Distance' par la description réelle.
-if ($distanceId) {
-    $history = getHistoricalReadings($distanceId, 10);
-    $labels = [];
-    $dataPoints = [];
-    foreach ($history as $record) {
-        $labels[] = (new DateTime($record['date_mesure']))->format('d/m H:i');
-        $dataPoints[] = (float)$record['valeur_mesure'];
-    }
-    $chartData['distance'] = ['labels' => $labels, 'data' => $dataPoints];
-}
-
-// Pour le son
-$soundId = $sensorIdMap['Capteur de Son'] ?? null; // REMPLACEZ 'Capteur de Son' par la description réelle.
-if ($soundId) {
-    $history = getHistoricalReadings($soundId, 10);
-    $labels = [];
-    $dataPoints = [];
-    foreach ($history as $record) {
-        $labels[] = (new DateTime($record['date_mesure']))->format('d/m H:i');
-        $dataPoints[] = (float)$record['valeur_mesure'];
-    }
-    $chartData['sound'] = ['labels' => $labels, 'data' => $dataPoints];
-}
-
-// Retourne les données encodées en JSON
-echo json_encode($chartData);
-
 ?>
