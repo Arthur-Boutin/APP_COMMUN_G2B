@@ -192,8 +192,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         datasets: [{
                             label: 'Son (dB)',
                             data: data.sound.data,
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgb(192, 75, 75)',
+                            backgroundColor: 'rgba(192, 75, 75, 0.2)',
                             tension: 0.4,
                             fill: true
                         }]
@@ -204,6 +204,51 @@ document.addEventListener('DOMContentLoaded', () => {
                         scales: {
                             x: { grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#fff' } },
                             y: { beginAtZero: false, grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#fff' } }
+                        },
+                        plugins: { legend: { labels: { color: '#fff' } } }
+                    }
+                });
+            }
+
+            // Graphique du Buzzer (Nombre d'activations par heure)
+            const buzzerCtx = document.getElementById('buzzerChart');
+            if (buzzerCtx && chartData.buzzer) {
+                new Chart(buzzerCtx.getContext('2d'), {
+                    type: 'line', // Changé de 'bar' à 'line'
+                    data: {
+                        labels: chartData.buzzer.labels,
+                        datasets: [{
+                            label: 'Nombre d\'activations du Buzzer',
+                            data: chartData.buzzer.data,
+                            backgroundColor: 'rgba(0, 254, 13, 0.4)', // Couleur de fond pour la ligne
+                            borderColor: 'rgb(102, 254, 0)', // Couleur de la ligne
+                            tension: 0.4, // Ajoute de la courbure à la ligne
+                            fill: true // Remplir la zone sous la ligne
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                                ticks: { color: '#fff' },
+                                title: { // Titre de l'axe X
+                                    display: true,
+                                    text: 'Date et Heure',
+                                    color: '#fff'
+                                }
+                            },
+                            y: {
+                                beginAtZero: false, // Il n'est pas toujours nécessaire de commencer à zéro pour un graphique en ligne
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                                ticks: { color: '#fff', precision: 0 }, // Assurer que les ticks sont des entiers
+                                title: { // Titre explicite de l'axe Y
+                                    display: true,
+                                    text: 'Nombre d\'activations',
+                                    color: '#fff'
+                                }
+                            }
                         },
                         plugins: { legend: { labels: { color: '#fff' } } }
                     }
