@@ -95,32 +95,6 @@ if ($soundReadings) {
     }
 }
 
-// Buzzer Activations - Compter l'activation heure par heure
-$buzzerActivations = getActivations($chartDataLimit);
-if ($buzzerActivations) {
-    usort($buzzerActivations, function($a, $b) {
-        return strtotime($a['date_mesure']) - strtotime($b['date_mesure']);
-    });
-
-    $hourlyActivations = [];
-    foreach ($buzzerActivations as $activation) {
-        $dateTime = new DateTime($activation['date_mesure'], new DateTimeZone('UTC'));
-        // Utiliser le format 'd/m H:00' pour regrouper par heure sur des jours différents
-        $hourLabel = $dateTime->format('d/m H:00'); 
-
-        if (!isset($hourlyActivations[$hourLabel])) {
-            $hourlyActivations[$hourLabel] = 0;
-        }
-        $hourlyActivations[$hourLabel]++;
-    }
-
-    // Convertir les données agrégées en format Chart.js
-    foreach ($hourlyActivations as $label => $count) {
-        $chartData['buzzer']['labels'][] = $label;
-        $chartData['buzzer']['data'][] = $count;
-    }
-}
-
 // Encoder les données des graphiques en JSON et les afficher
 try {
     echo json_encode($chartData, JSON_THROW_ON_ERROR);

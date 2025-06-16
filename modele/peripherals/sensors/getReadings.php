@@ -7,7 +7,7 @@ function getSensorReadings(int $idObjet, int $limit = PHP_INT_MAX): ?array
         $limit = (int) $limit;
 
         $pdo = connectToSharedDB();
-        $sql = "SELECT * FROM `mesures` WHERE id_objet=:idObjet LIMIT $limit;";
+        $sql = "SELECT * FROM `mesures` WHERE id_objet=:idObjet ORDER BY date_mesure DESC LIMIT $limit;";
 
         $stmt = $pdo->prepare($sql);
         $bool = $stmt->execute([':idObjet' => $idObjet]);
