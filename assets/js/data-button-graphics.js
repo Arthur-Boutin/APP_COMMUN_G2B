@@ -8,9 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialisation de la vue par défaut (Liste)
     listView.classList.remove('hidden');
     buttonView.classList.add('hidden');
-    // graphicsView sera gérée par son propre master toggle si elle est cachée par défaut en HTML.
-    // Si graphicsView est visible par défaut en HTML, la ligne ci-dessous n'est pas nécessaire.
-    // graphicsView.classList.add('hidden'); // Assurez-vous qu'elle est cachée si ce n'est pas le cas en HTML
 
     // Initialisation du texte du bouton principal de bascule
     toggleViewBtn.textContent = 'Passer à la vue Cartes';

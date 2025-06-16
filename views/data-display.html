@@ -46,7 +46,7 @@
 
         <!-- Vue Cartes -->
         <div id="buttonView" class="section hidden">
-            <h2>Capteurs</h2>
+            <h2>Capteurs (derniers relevés)</h2>
             <div class="data-buttons-grid">
                 <?php foreach ($lastSensorsReadings as $readingString):
                     // Extrait la description du capteur de la chaîne pour le titre de la carte
@@ -60,7 +60,7 @@
                 <?php endforeach; ?>
             </div>
 
-            <h2>Actionneurs</h2>
+            <h2>Actionneurs (derniers relevés)</h2>
             <div class="data-buttons-grid">
                 <?php foreach ($lastActuatorsReadings as $readingString):
                     // Extrait la description de l'actionneur de la chaîne pour le titre de la carte
