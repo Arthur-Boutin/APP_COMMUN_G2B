@@ -29,7 +29,15 @@ body {
 }
 
 .container-data {
-    width: 100%;
+    width: 55%;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    margin: 2rem auto; /* Centre le container horizontalement et ajoute une marge en haut/bas */
+    flex-grow: 1;
 }
 
 .section {
@@ -575,6 +583,9 @@ footer {
 .toggle-container {
     text-align: center;
     margin-bottom: 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .toggle-container .form-btn {
@@ -619,21 +630,25 @@ footer {
 
 
 .data-display-card h3 {
-    font-size: 1.3rem;
+    font-size: 1rem;
     margin-bottom: 0.8rem;
-    color: #4facfe; /* Couleur d'accentuation pour les titres */
 }
 
 /* Nouvelle classe pour afficher le texte complet sur la carte */
 .data-value-full {
-    font-size: 1rem; /* Taille de police pour le texte complet */
-    font-weight: normal;
-    margin-bottom: 0;
-    color: #e0e0e0; /* Couleur de texte plus neutre */
+    font-size: 1.7rem; /* Taille de police pour le texte complet */
+    margin-bottom: 2%;
+    color: #4facfe;
+    font-weight: bold;
     word-wrap: break-word; /* Permet de casser les mots longs */
     white-space: normal; /* S'assure que le texte se retourne à la ligne */
 }
 
+.data-date, .data-actuator-date {
+    margin-top: 3%;
+    font-style: italic;
+    font-size: 0.8rem;
+}
 
 /* Styles pour les conteneurs de graphiques */
 .chart-container {
@@ -735,28 +750,44 @@ footer {
     border-radius: 8px;
 }
 
+#listView h2, #buttonView h2 {
+    margin-top: 2rem;
+}
+
+#graphicsView h2 {
+    margin-bottom: 2rem;
+}
+
+.form-data-btn {
+    width: 30%;
+}
+
 .sensor-item p {
     font-size: 0.9rem;
     color: #e0e0e0;
 
-    .data-buttons-grid { /* Affecte la grille de cartes maintenant */
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Moins de colonnes sur mobile */
-        gap: 1rem;
+.data-buttons-grid { /* Affecte la grille de cartes maintenant */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Moins de colonnes sur mobile */
+    gap: 1rem;
+}
+
+.data-display-card { /* Affecte les cartes individuelles maintenant */
+    padding: 1rem;
+}
+
+.data-display-card h3 {
+    font-size: 1.1rem;
+}
+
+.data-value-full {
+    font-size: 0.9rem; /* Taille de police plus petite sur mobile */
+}
+    .data-date {
+        margin-top: 3%;
     }
 
-    .data-display-card { /* Affecte les cartes individuelles maintenant */
-        padding: 1rem;
-    }
+.chart-container {
+    height: 300px; /* Réduire la hauteur des graphiques sur mobile */
+}
 
-    .data-display-card h3 {
-        font-size: 1.1rem;
-    }
-
-    .data-value-full {
-        font-size: 0.9rem; /* Taille de police plus petite sur mobile */
-    }
-
-    .chart-container {
-        height: 300px; /* Réduire la hauteur des graphiques sur mobile */
-    }
 }
