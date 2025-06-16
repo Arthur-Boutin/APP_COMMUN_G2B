@@ -76,39 +76,29 @@
         </div>
 
         <!-- Section pour les Graphiques -->
-        <div class="section">
+        <div id="graphicsView" class="section"> 
             <h2>Historique des Capteurs</h2>
-            <div class="toggle-container">
-                <button id="toggleTemperatureChartBtn" class="form-btn">Masquer le graphique de Température</button>
+            <!-- Bouton de bascule globale pour tous les graphiques -->
+            <div class="toggle-container" style="margin-bottom: 20px;">
+                <button id="toggleAllChartsBtn" class="form-btn">Masquer tous les Graphiques</button>
             </div>
+
             <div class="chart-container" id="temperatureChartContainer">
                 <canvas id="temperatureChart"></canvas>
             </div>
 
-            <div class="toggle-container">
-                <button id="toggleHumidityChartBtn" class="form-btn">Masquer le graphique d'Humidité</button>
-            </div>
             <div class="chart-container" id="humidityChartContainer">
                 <canvas id="humidityChart"></canvas>
             </div>
 
-            <div class="toggle-container">
-                <button id="toggleLightChartBtn" class="form-btn">Masquer le graphique de Luminosité</button>
-            </div>
             <div class="chart-container" id="lightChartContainer">
                 <canvas id="lightChart"></canvas>
             </div>
 
-            <div class="toggle-container">
-                <button id="toggleDistanceChartBtn" class="form-btn">Masquer le graphique de Distance</button>
-            </div>
             <div class="chart-container" id="distanceChartContainer">
                 <canvas id="distanceChart"></canvas>
             </div>
 
-            <div class="toggle-container">
-                <button id="toggleSoundChartBtn" class="form-btn">Masquer le graphique de Son</button>
-            </div>
             <div class="chart-container" id="soundChartContainer">
                 <canvas id="soundChart"></canvas>
             </div>

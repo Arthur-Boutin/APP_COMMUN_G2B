@@ -1,11 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Logique de bascule entre les vues Liste et Cartes (conserve le comportement existant)
+
     const toggleViewBtn = document.getElementById('toggleViewBtn');
     const listView = document.getElementById('listView');
     const buttonView = document.getElementById('buttonView'); 
     let isListView = true; // L'état initial est la vue liste
 
-    // Initialisation du texte du bouton selon la vue par défaut
+    // Initialisation de la vue par défaut (Liste)
+    listView.classList.remove('hidden');
+    buttonView.classList.add('hidden');
+    // graphicsView sera gérée par son propre master toggle si elle est cachée par défaut en HTML.
+    // Si graphicsView est visible par défaut en HTML, la ligne ci-dessous n'est pas nécessaire.
+    // graphicsView.classList.add('hidden'); // Assurez-vous qu'elle est cachée si ce n'est pas le cas en HTML
+
+    // Initialisation du texte du bouton principal de bascule
     toggleViewBtn.textContent = 'Passer à la vue Cartes';
 
     toggleViewBtn.addEventListener('click', () => {
@@ -23,193 +30,170 @@ document.addEventListener('DOMContentLoaded', () => {
         isListView = !isListView; // Inverse l'état
     });
 
-    // Fonction générique pour créer des toggles de graphique
-    function setupChartToggle(buttonId, chartContainerId, chartTitle) {
-        const toggleButton = document.getElementById(buttonId);
-        const chartContainer = document.getElementById(chartContainerId);
 
-        if (!toggleButton || !chartContainer) {
-            return;
-        }
+    // --- NOUVEAU: Logique pour le bouton de bascule globale des graphiques ---
+    const toggleAllChartsBtn = document.getElementById('toggleAllChartsBtn');
+    const chartContainers = document.querySelectorAll('#graphicsView .chart-container'); // Sélectionne tous les conteneurs de graphique dans graphicsView
+    let allChartsVisible = true; // État initial de tous les graphiques
 
-        let isChartVisible = true; // Par défaut, les graphiques sont visibles
+    if (toggleAllChartsBtn) {
+        toggleAllChartsBtn.textContent = 'Masquer tous les Graphiques'; // Texte initial
 
-        // Initialisation du texte du bouton
-        toggleButton.textContent = `Masquer ${chartTitle}`;
+        toggleAllChartsBtn.addEventListener('click', () => {
+            allChartsVisible = !allChartsVisible; // Inverse l'état
 
-        toggleButton.addEventListener('click', () => {
-            if (isChartVisible) {
-                chartContainer.classList.add('hidden');
-                toggleButton.textContent = `Afficher ${chartTitle}`;
-            } else {
-                chartContainer.classList.remove('hidden');
-                toggleButton.textContent = `Masquer ${chartTitle}`;
-            }
-            isChartVisible = !isChartVisible;
+            chartContainers.forEach(container => {
+                if (allChartsVisible) {
+                    container.classList.remove('hidden');
+                } else {
+                    container.classList.add('hidden');
+                }
+            });
+
+            // Mettre à jour le texte du bouton global
+            toggleAllChartsBtn.textContent = allChartsVisible ? 'Masquer tous les Graphiques' : 'Afficher tous les Graphiques';
+
+            // Mettre à jour le texte des boutons de bascule individuels pour la cohérence
+            // Il faut s'assurer que setupChartToggle gère l'état initial des boutons
+            // Pour cela, nous allons re-initialiser les setupChartToggle pour mettre à jour leur texte
+            // Il serait préférable de stocker les états individuellement si cette opération est coûteuse.
+            // Pour l'instant, on se base sur l'état global.
+            const individualToggleButtons = document.querySelectorAll('#graphicsView .toggle-container .form-btn:not(#toggleAllChartsBtn)');
+            individualToggleButtons.forEach(btn => {
+                const chartTitle = btn.textContent.replace(/(Masquer|Afficher) le graphique de /, '');
+                if (allChartsVisible) {
+                    btn.textContent = `Masquer le graphique de ${chartTitle}`;
+                } else {
+                    btn.textContent = `Afficher le graphique de ${chartTitle}`;
+                }
+            });
         });
     }
 
-    // Configuration des toggles pour TOUS les graphiques
-    setupChartToggle('toggleTemperatureChartBtn', 'temperatureChartContainer', 'le graphique de Température');
-    setupChartToggle('toggleHumidityChartBtn', 'humidityChartContainer', 'le graphique d\'Humidité');
-    setupChartToggle('toggleLightChartBtn', 'lightChartContainer', 'le graphique de Luminosité');
-    setupChartToggle('toggleDistanceChartBtn', 'distanceChartContainer', 'le graphique de Distance');
-    setupChartToggle('toggleSoundChartBtn', 'soundChartContainer', 'le graphique de Son');
+    // --- Fonction générique pour créer des toggles de graphique individuel ---
+    // (Légèrement modifiée pour être réinitialisable par le toggle global si nécessaire)
+    const chartToggleStates = {}; // Stocke l'état visible de chaque graphique individuel
 
+    function setupChartToggle(buttonId, chartContainerId, chartTitle) {
+        const button = document.getElementById(buttonId);
+        const container = document.getElementById(chartContainerId);
+        
+        if (!button || !container) {
+            console.warn(`Bouton ou conteneur de graphique non trouvé pour ${chartTitle}`);
+            return;
+        }
 
-    // Intégration de Chart.js avec des données de la base de données
-    // Assurez-vous que le chemin vers votre script PHP est correct.
+        // Initialiser l'état si ce n'est pas déjà fait
+        if (chartToggleStates[chartContainerId] === undefined) {
+             // Assumer visible par défaut si le conteneur n'a pas la classe hidden
+            chartToggleStates[chartContainerId] = !container.classList.contains('hidden'); 
+        }
+
+        // Mettre à jour le texte initial du bouton basé sur son état
+        button.textContent = chartToggleStates[chartContainerId] ? `Masquer le graphique de ${chartTitle}` : `Afficher le graphique de ${chartTitle}`;
+
+        button.addEventListener('click', () => {
+            chartToggleStates[chartContainerId] = !chartToggleStates[chartContainerId]; // Inverse l'état
+            if (chartToggleStates[chartContainerId]) {
+                container.classList.remove('hidden');
+                button.textContent = `Masquer le graphique de ${chartTitle}`;
+            } else {
+                container.classList.add('hidden');
+                button.textContent = `Afficher le graphique de ${chartTitle}`;
+            }
+        });
+    }
+
+    // --- Récupérer les données des graphiques depuis l'API PHP ---
     fetch('../controllers/get_sensor_data.php')
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Erreur HTTP! Statut: ${response.status}`);
+                return response.json().then(errorData => {
+                    throw new Error(errorData.error || `Erreur HTTP: ${response.status}`);
+                });
             }
             return response.json();
         })
-        .then(data => {
-            // Initialisation des graphiques avec les données de la base de données
+        .then(chartData => {
+            console.log("Données reçues de l'API:", chartData);
 
-            // Graphique de Température
-            const tempCtx = document.getElementById('temperatureChart');
-            if (tempCtx && data.temperature && data.temperature.labels && data.temperature.data) {
-                new Chart(tempCtx.getContext('2d'), {
-                    type: 'line',
-                    data: {
-                        labels: data.temperature.labels,
-                        datasets: [{
-                            label: 'Température (°C)',
-                            data: data.temperature.data,
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: { grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#fff' } },
-                            y: { beginAtZero: false, grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#fff' } }
-                        },
-                        plugins: { legend: { labels: { color: '#fff' } } }
-                    }
-                });
-            }
+            const chartsToCreate = [
+                { id: 'temperatureChart', type: 'line', label: 'Température (°C)', data: chartData.temperature, borderColor: 'rgb(99, 255, 234)', backgroundColor: 'rgba(99, 255, 255, 0.2)', yAxisText: 'Température (°C)' },
+                { id: 'humidityChart', type: 'line', label: 'Humidité (%)', data: chartData.humidity, borderColor: 'rgb(154, 54, 235)', backgroundColor: 'rgba(154, 54, 235, 0.2)', yAxisText: 'Humidité (%)' },
+                { id: 'lightChart', type: 'line', label: 'Luminosité (lux)', data: chartData.light, borderColor: 'rgba(255, 206, 86, 1)', backgroundColor: 'rgba(255, 206, 86, 0.2)', yAxisText: 'Luminosité (lux)' },
+                { id: 'distanceChart', type: 'line', label: 'Distance (m)', data: chartData.distance, borderColor: 'rgb(255, 102, 235)', backgroundColor: 'rgba(255, 102, 242, 0.2)', yAxisText: 'Distance (m)' },
+                { id: 'soundChart', type: 'line', label: 'Son (dB)', data: chartData.sound, borderColor: 'rgb(102, 192, 75)', backgroundColor: 'rgba(102, 192, 75, 0.2)', yAxisText: 'Son (dB)' }
+            ];
 
-            // Graphique d'Humidité
-            const humidityCtx = document.getElementById('humidityChart');
-            if (humidityCtx && data.humidity && data.humidity.labels && data.humidity.data) {
-                new Chart(humidityCtx.getContext('2d'), {
-                    type: 'line',
-                    data: {
-                        labels: data.humidity.labels,
-                        datasets: [{
-                            label: 'Humidité (%)',
-                            data: data.humidity.data,
-                            borderColor: 'rgba(153, 102, 255, 1)',
-                            backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: { grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#fff' } },
-                            y: { beginAtZero: false, grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#fff' } }
+            chartsToCreate.forEach(chartInfo => {
+                const ctx = document.getElementById(chartInfo.id);
+                if (ctx && chartInfo.data && chartInfo.data.labels && chartInfo.data.labels.length > 0) {
+                    new Chart(ctx.getContext('2d'), {
+                        type: chartInfo.type,
+                        data: {
+                            labels: chartInfo.data.labels,
+                            datasets: [{
+                                label: chartInfo.label,
+                                data: chartInfo.data.data,
+                                borderColor: chartInfo.borderColor,
+                                backgroundColor: chartInfo.backgroundColor,
+                                tension: chartInfo.tension !== undefined ? chartInfo.tension : 0.4,
+                                fill: chartInfo.fill !== undefined ? chartInfo.fill : true
+                            }]
                         },
-                        plugins: { legend: { labels: { color: '#fff' } } }
-                    }
-                });
-            }
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: {
+                                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                                    ticks: { color: '#fff' },
+                                    title: {
+                                        display: true,
+                                        text: 'Date et Heure',
+                                        color: '#fff'
+                                    }
+                                },
+                                y: {
+                                    beginAtZero: chartInfo.beginAtZero !== undefined ? chartInfo.beginAtZero : false,
+                                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                                    ticks: {
+                                        color: '#fff',
+                                        precision: (chartInfo.id === 'buzzerChart') ? 0 : undefined
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: chartInfo.yAxisText,
+                                        color: '#fff'
+                                    }
+                                }
+                            },
+                            plugins: { legend: { labels: { color: '#fff' } } }
+                        }
+                    });
+                } else if (ctx) {
+                    const parent = ctx.parentElement;
+                    ctx.remove(); 
+                    const messageDiv = document.createElement('div');
+                    messageDiv.style.cssText = "color: #a8b2d1; text-align: center; padding-top: 2rem; font-size: 1rem;";
+                    messageDiv.textContent = `Aucune donnée disponible pour ${chartInfo.label}.`;
+                    parent.appendChild(messageDiv);
+                }
+            });
 
-            // Graphique de Luminosité
-            const lightCtx = document.getElementById('lightChart');
-            if (lightCtx && data.light && data.light.labels && data.light.data) {
-                new Chart(lightCtx.getContext('2d'), {
-                    type: 'line',
-                    data: {
-                        labels: data.light.labels,
-                        datasets: [{
-                            label: 'Luminosité (Lux)',
-                            data: data.light.data,
-                            borderColor: 'rgba(255, 206, 86, 1)',
-                            backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: { grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#fff' } },
-                            y: { beginAtZero: false, grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#fff' } }
-                        },
-                        plugins: { legend: { labels: { color: '#fff' } } }
-                    }
-                });
-            }
+            // Initialiser les toggles individuels après la création des graphiques
+            setupChartToggle('toggleTemperatureChartBtn', 'temperatureChartContainer', 'Température');
+            setupChartToggle('toggleHumidityChartBtn', 'humidityChartContainer', 'Humidité');
+            setupChartToggle('toggleLightChartBtn', 'lightChartContainer', 'Luminosité');
+            setupChartToggle('toggleDistanceChartBtn', 'distanceChartContainer', 'Distance');
+            setupChartToggle('toggleSoundChartBtn', 'soundChartContainer', 'Son');
 
-            // Graphique de Distance
-            const distanceCtx = document.getElementById('distanceChart');
-            if (distanceCtx && data.distance && data.distance.labels && data.distance.data) {
-                new Chart(distanceCtx.getContext('2d'), {
-                    type: 'line',
-                    data: {
-                        labels: data.distance.labels,
-                        datasets: [{
-                            label: 'Distance (m)',
-                            data: data.distance.data,
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: { grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#fff' } },
-                            y: { beginAtZero: false, grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#fff' } }
-                        },
-                        plugins: { legend: { labels: { color: '#fff' } } }
-                    }
-                });
-            }
-
-            // Graphique de Son
-            const soundCtx = document.getElementById('soundChart');
-            if (soundCtx && data.sound && data.sound.labels && data.sound.data) {
-                new Chart(soundCtx.getContext('2d'), {
-                    type: 'line',
-                    data: {
-                        labels: data.sound.labels,
-                        datasets: [{
-                            label: 'Son (dB)',
-                            data: data.sound.data,
-                            borderColor: 'rgb(192, 75, 75)',
-                            backgroundColor: 'rgba(192, 75, 75, 0.2)',
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: { grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#fff' } },
-                            y: { beginAtZero: false, grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#fff' } }
-                        },
-                        plugins: { legend: { labels: { color: '#fff' } } }
-                    }
-                });
-            }
         })
         .catch(error => {
-            console.error('Erreur lors du chargement des données des capteurs :', error);
+            console.error('Erreur lors de la récupération des données des graphiques:', error);
+            const graphicsViewSection = document.getElementById('graphicsView');
+            if (graphicsViewSection) {
+                graphicsViewSection.innerHTML = '<p style="color: red; text-align: center; font-size: 1.2rem; padding: 2rem;">Impossible de charger les données des graphiques. Veuillez vérifier votre connexion ou les logs du serveur.</p>';
+            }
         });
 });
