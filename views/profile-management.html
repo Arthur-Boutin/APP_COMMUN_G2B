@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion du Profil</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="../assets/images/logo.ico" rel="icon">
+</head>
+<body>
+    <div class="main-container">
+        <section class="section">
+            <h1>Gestion du Profil</h1>
+            <p class="subtitle">Mettez à jour vos informations personnelles et votre mot de passe.</p>
+
+            <?php if (!empty($success_message)): ?>
+                <div class="wrong-login">
+                    <?= htmlspecialchars($success_message); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($errors) && isset($errors['update_failed'])): ?>
+                <div class="wrong-signup">
+                    <?= htmlspecialchars($errors['update_failed']); ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="form-container">
+                <h2>Informations Personnelles</h2>
+                <form action="profile-management.php" method="POST">
+                    <div class="form-group">
+                        <label for="prenom">Prénom</label>
+                        <input type="text" id="prenom" name="prenom" value="<?= htmlspecialchars($prenom); ?>" required>
+                        <?php if (isset($errors['prenom'])): ?>
+                            <p class="wrong-signup"><?= htmlspecialchars($errors['prenom']); ?></p>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nom">Nom</label>
+                        <input type="text" id="nom" name="nom" value="<?= htmlspecialchars($nom); ?>" required>
+                        <?php if (isset($errors['nom'])): ?>
+                            <p class="wrong-signup"><?= htmlspecialchars($errors['nom']); ?></p>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Pseudonyme</label>
+                        <input type="text" id="username" name="username" value="<?= htmlspecialchars($pseudonyme); ?>" required>
+                        <?php if (isset($errors['pseudonyme'])): ?>
+                            <p class="wrong-signup"><?= htmlspecialchars($errors['pseudonyme']); ?></p>
+                        <?php endif; ?>
+                        <?php if (isset($errors['pseudonyme_unique'])): ?>
+                            <p class="wrong-signup"><?= htmlspecialchars($errors['pseudonyme_unique']); ?></p>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" value="<?= htmlspecialchars($email); ?>" required>
+                        <?php if (isset($errors['email'])): ?>
+                            <p class="wrong-signup"><?= htmlspecialchars($errors['email']); ?></p>
+                        <?php endif; ?>
+                        <?php if (isset($errors['email_unique'])): ?>
+                            <p class="wrong-signup"><?= htmlspecialchars($errors['email_unique']); ?></p>
+                        <?php endif; ?>
+                    </div>
+
+                    <button type="submit" name="update_profile" class="form-btn">Mettre à jour les informations</button>
+                </form>
+            </div>
+
+            <div class="form-container">
+                <h2>Changer le Mot de Passe</h2>
+                <form action="profile-management.php" method="POST">
+                    <div class="form-group">
+                        <label for="current_password">Mot de passe actuel</label>
+                        <input type="password" id="current_password" name="current_password" required>
+                        <?php if (isset($errors['current_password'])): ?>
+                            <p class="wrong-signup"><?= htmlspecialchars($errors['current_password']); ?></p>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new_password">Nouveau mot de passe</label>
+                        <input type="password" id="new_password" name="new_password" required>
+                        <?php if (isset($errors['new_password'])): ?>
+                            <p class="wrong-signup"><?= $errors['new_password']; ?></p>
+                        <?php endif; ?>
+                         <?php if (isset($errors['new_password_same'])): ?>
+                            <p class="wrong-signup"><?= htmlspecialchars($errors['new_password_same']); ?></p>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_new_password">Confirmer le nouveau mot de passe</label>
+                        <input type="password" id="confirm_new_password" name="confirm_new_password" required>
+                        <?php if (isset($errors['confirm_new_password'])): ?>
+                            <p class="wrong-signup"><?= htmlspecialchars($errors['confirm_new_password']); ?></p>
+                        <?php endif; ?>
+                    </div>
+
+                    <button type="submit" name="update_password" class="form-btn">Changer le mot de passe</button>
+                    <?php if (!empty($errors) && isset($errors['password_update_failed'])): ?>
+                        <div class="wrong-signup">
+                            <?= htmlspecialchars($errors['password_update_failed']); ?>
+                        </div>
+                    <?php endif; ?>
+                </form>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

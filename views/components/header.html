@@ -9,13 +9,51 @@
     <nav class="main-navigation">
         <ul>
             <li><a href="index.php">Accueil</a></li>
-            <li><a href="../controllers/buzzer-management.php">Gestion du buzzer</a></li>
-            <li><a href="../controllers/data-display.php">Affichage des données</a></li>
             <?php if (isset($_SESSION['username'])): ?>
-                <li><a href="../controllers/log-out.php">Déconnexion</a></li>
+                <?php
+                    $displayName = '';
+                    if (isset($_SESSION['prenom']) && !empty(trim($_SESSION['prenom']))) {
+                        $displayName = $_SESSION['prenom'];
+                    } elseif (isset($_SESSION['username'])) {
+                        $displayName = $_SESSION['username'];
+                    }
+                ?>
+                <li><a href="../controllers/buzzer-management.php">Gestion du buzzer</a></li>
+                <li><a href="../controllers/data-display.php">Affichage des données</a></li>
+                <li class="profile-dropdown-container">
+                    <a href="#" class="profile-link-nav dropdown-toggle" id="profileDropdownToggle">
+                        <span class="username-nav"><?= htmlspecialchars($displayName); ?></span>
+                        <span class="profile-label-nav">Profil &#9662;</span> <!-- Ajout d'une flèche vers le bas -->
+                    </a>
+                    <ul class="dropdown-menu" id="profileDropdownMenu">
+                        <li><a href="../controllers/profile-management.php">Gestion du profil</a></li>
+                        <li><a href="../controllers/log-out.php">Déconnexion</a></li>
+                    </ul>
+                </li>
             <?php else: ?>
-                <li><a href="../controllers/log-in.php">Connexion</a></li>
+                <li><a href="../controllers/log-in.php" class="login-nav-highlight">Connexion</a></li>
             <?php endif; ?>
         </ul>
     </nav>
 </header>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdownToggle = document.getElementById('profileDropdownToggle');
+    const dropdownMenu = document.getElementById('profileDropdownMenu');
+
+    if (dropdownToggle && dropdownMenu) {
+        dropdownToggle.addEventListener('click', function(event) {
+            event.preventDefault(); // Empêche le lien de naviguer
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Fermer le menu si on clique en dehors
+        window.addEventListener('click', function(event) {
+            if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+    }
+});
+</script>
