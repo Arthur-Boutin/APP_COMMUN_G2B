@@ -10,7 +10,6 @@ include PROJECT_ROOT . '/config/autoload.php';
 include PROJECT_ROOT . '/modele/peripherals/sensors/getReadings.php';
 include PROJECT_ROOT . '/modele/peripherals/sensors/listSensors.php';
 include PROJECT_ROOT . '/modele/peripherals/actuators/listActuators.php'; // Inclure si les actionneurs ont des relevés à afficher
-include PROJECT_ROOT . '/modele/peripherals/actuators/getActivations.php'; // Spécifique au buzzer
 
 // Définir l'en-tête pour indiquer que la réponse est du JSON
 header('Content-Type: application/json');
@@ -40,7 +39,7 @@ foreach ($sensorsList as $sensor) {
 // ID 6: Buzzer (activation)
 
 // Température
-$tempReadings = getSensorReadings($sensorDescriptionsToIds['Temperature'] ?? 1, $chartDataLimit);
+$tempReadings = getSensorGraphics($sensorDescriptionsToIds['Temperature'] ?? 1, $chartDataLimit);
 if ($tempReadings) {
     usort($tempReadings, function($a, $b) {
         return strtotime($a['date_mesure']) - strtotime($b['date_mesure']);
@@ -51,7 +50,7 @@ if ($tempReadings) {
     }
 }
 // Humidité
-$humidityReadings = getSensorReadings($sensorDescriptionsToIds['Humidité'] ?? 2, $chartDataLimit);
+$humidityReadings = getSensorGraphics($sensorDescriptionsToIds['Humidité'] ?? 2, $chartDataLimit);
 if ($humidityReadings) {
     usort($humidityReadings, function($a, $b) {
         return strtotime($a['date_mesure']) - strtotime($b['date_mesure']);
@@ -62,7 +61,7 @@ if ($humidityReadings) {
     }
 }
 // Luminosité
-$lightReadings = getSensorReadings($sensorDescriptionsToIds['Luminosité'] ?? 3, $chartDataLimit);
+$lightReadings = getSensorGraphics($sensorDescriptionsToIds['Luminosité'] ?? 3, $chartDataLimit);
 if ($lightReadings) {
     usort($lightReadings, function($a, $b) {
         return strtotime($a['date_mesure']) - strtotime($b['date_mesure']);
@@ -73,7 +72,7 @@ if ($lightReadings) {
     }
 }
 // Distance
-$distanceReadings = getSensorReadings($sensorDescriptionsToIds['Distance'] ?? 4, $chartDataLimit);
+$distanceReadings = getSensorGraphics($sensorDescriptionsToIds['Distance'] ?? 4, $chartDataLimit);
 if ($distanceReadings) {
     usort($distanceReadings, function($a, $b) {
         return strtotime($a['date_mesure']) - strtotime($b['date_mesure']);
@@ -84,7 +83,7 @@ if ($distanceReadings) {
     }
 }
 // Son
-$soundReadings = getSensorReadings($sensorDescriptionsToIds['Son'] ?? 5, $chartDataLimit);
+$soundReadings = getSensorGraphics($sensorDescriptionsToIds['Son'] ?? 5, $chartDataLimit);
 if ($soundReadings) {
     usort($soundReadings, function($a, $b) {
         return strtotime($a['date_mesure']) - strtotime($b['date_mesure']);
