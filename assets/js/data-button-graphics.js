@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupChartToggle(buttonId, chartContainerId, chartTitle) {
         const button = document.getElementById(buttonId);
         const container = document.getElementById(chartContainerId);
-
         if (!button || !container) {
             console.warn(`Bouton ou conteneur de graphique non trouvé pour ${chartTitle}`);
             return;
