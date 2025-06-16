@@ -11,6 +11,7 @@ use utils\Buzzer;
 session_start();
 
 $lastSensorsReadings = array();
+$lastSensorsReadingsCardFormat = array();
 foreach (getSensorsList() as $sensor) {
     $lastReading = getLastReading($sensor['id_objet']);
 
@@ -20,18 +21,23 @@ foreach (getSensorsList() as $sensor) {
     }
 
     $formattedReading = $lastReading ? $sensor['description'] . ' : ' . round($lastReading['valeur_mesure'], 2) . " " . $sensor['unite'] . " - le " . $formattedDate : $sensor['description'] . ' : Aucun relevé disponible';
+    $formattedReadingCard = $lastReading ? [ $sensor['description'], round($lastReading['valeur_mesure'], 2) . " " . $sensor['unite'], "le " . $formattedDate ] : $sensor['description'] . ' : Aucun relevé disponible';
     array_push($lastSensorsReadings, $formattedReading);
+    array_push($lastSensorsReadingsCardFormat, $formattedReadingCard);
 }
 
 
 $lastActuatorsReadings = array();
+$lastActuatorsReadingsCardFormat = array();
 foreach (getActuatorsList() as $actuator) {
     $lastReading = getLastReading($actuator['id_objet']);
     $formattedDate = (new DateTime($lastReading['date_mesure'], new DateTimeZone('UTC')))
         ->format('d/m/Y à H:i:s');
 
     $formattedReading = $lastReading ? $actuator['description'] . " - le " . $formattedDate : $actuator['description'] . ' : Aucun relevé disponible';
+    $formattedReadingCard = $lastReading ? [ $actuator['description'], "le " . $formattedDate ] : $actuator['description'] . ' : Aucun relevé disponible';
     array_push($lastActuatorsReadings, $formattedReading);
+    array_push($lastActuatorsReadingsCardFormat, $formattedReadingCard);
 }
 
 include_once PROJECT_ROOT . '/views/components/header.html';

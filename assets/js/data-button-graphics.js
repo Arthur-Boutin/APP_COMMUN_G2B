@@ -1,57 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const toggleViewBtn = document.getElementById('toggleViewBtn');
+    const toggleViewBtnCard = document.getElementById('toggleViewBtnCard');
+    const toggleViewBtnList = document.getElementById('toggleViewBtnList');
+    const toggleViewBtnGraph = document.getElementById('toggleViewBtnGraph');
     const listView = document.getElementById('listView');
-    const buttonView = document.getElementById('buttonView'); 
-    let isListView = true; // L'état initial est la vue liste
+    const buttonView = document.getElementById('buttonView');
+    const graphView = document.getElementById('graphicsView');
 
-    
-    // Initialisation de la vue par défaut (Liste)
-    listView.classList.remove('hidden');
-    buttonView.classList.add('hidden');
+    toggleViewBtnCard.addEventListener('click', () => {
+        buttonView.classList.remove('hidden');
+        listView.classList.add('hidden');
+        graphView.classList.add('hidden');
+    })
 
-    // Initialisation du texte du bouton principal de bascule
-    toggleViewBtn.textContent = 'Passer à la vue Cartes';
+    toggleViewBtnList.addEventListener('click', () => {
+        listView.classList.remove('hidden');
+        buttonView.classList.add('hidden');
+        graphView.classList.add('hidden');
+    })
 
-    toggleViewBtn.addEventListener('click', () => {
-        if (isListView) {
-            // Si la vue actuelle est la liste, passer aux cartes
-            listView.classList.add('hidden');
-            buttonView.classList.remove('hidden');
-            toggleViewBtn.textContent = 'Passer à la vue Liste'; // Le bouton propose de revenir à la liste
-        } else {
-            // Si la vue actuelle est les cartes, passer à la liste
-            listView.classList.remove('hidden');
-            buttonView.classList.add('hidden');
-            toggleViewBtn.textContent = 'Passer à la vue Cartes'; // Le bouton propose de passer aux cartes
-        }
-        isListView = !isListView; // Inverse l'état
-    });
-
-
-    // --- NOUVEAU: Logique pour le bouton de bascule globale des graphiques ---
-    const toggleAllChartsBtn = document.getElementById('toggleAllChartsBtn');
-    const chartContainers = document.querySelectorAll('#graphicsView .chart-container'); // Sélectionne tous les conteneurs de graphique dans graphicsView
-    let allChartsVisible = true; // État initial de tous les graphiques
-
-    if (toggleAllChartsBtn) {
-        toggleAllChartsBtn.textContent = 'Masquer tous les graphiques'; // Texte initial
-
-        toggleAllChartsBtn.addEventListener('click', () => {
-            allChartsVisible = !allChartsVisible; // Inverse l'état
-
-            chartContainers.forEach(container => {
-                if (allChartsVisible) {
-                    container.classList.remove('hidden');
-                } else {
-                    container.classList.add('hidden');
-                }
-            });
-
-            // Mettre à jour le texte du bouton global
-            toggleAllChartsBtn.textContent = allChartsVisible ? 'Masquer tous les graphiques' : 'Afficher tous les graphiques';
-        });
-    }
+    toggleViewBtnGraph.addEventListener('click', () => {
+        graphView.classList.remove('hidden');
+        listView.classList.add('hidden');
+        buttonView.classList.add('hidden');
+    })
 
     // --- Fonction générique pour créer des toggles de graphique individuel ---
     // (Légèrement modifiée pour être réinitialisable par le toggle global si nécessaire)
@@ -60,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupChartToggle(buttonId, chartContainerId, chartTitle) {
         const button = document.getElementById(buttonId);
         const container = document.getElementById(chartContainerId);
-        
+
         if (!button || !container) {
             console.warn(`Bouton ou conteneur de graphique non trouvé pour ${chartTitle}`);
             return;
@@ -69,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Initialiser l'état si ce n'est pas déjà fait
         if (chartToggleStates[chartContainerId] === undefined) {
              // Assumer visible par défaut si le conteneur n'a pas la classe hidden
-            chartToggleStates[chartContainerId] = !container.classList.contains('hidden'); 
+            chartToggleStates[chartContainerId] = !container.classList.contains('hidden');
         }
     }
 
@@ -90,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 'temperatureChart', type: 'line', label: 'Capteur Température', data: chartData.temperature, borderColor: 'rgb(99, 255, 234)', backgroundColor: 'rgba(99, 255, 255, 0.2)', yAxisText: 'Température (°C)' },
                 { id: 'humidityChart', type: 'line', label: 'Capteur Humidité', data: chartData.humidity, borderColor: 'rgb(154, 54, 235)', backgroundColor: 'rgba(154, 54, 235, 0.2)', yAxisText: 'Humidité (%)' },
                 { id: 'lightChart', type: 'line', label: 'Capteur Lumière', data: chartData.light, borderColor: 'rgba(255, 206, 86, 1)', backgroundColor: 'rgba(255, 206, 86, 0.2)', yAxisText: 'Luminosité (lux)' },
-                { id: 'distanceChart', type: 'line', label: 'Capteur Distance', data: chartData.distance, borderColor: 'rgb(255, 102, 235)', backgroundColor: 'rgba(255, 102, 242, 0.2)', yAxisText: 'Distance (m)' },
+                { id: 'distanceChart', type: 'line', label: 'Compteur de Personnes', data: chartData.distance, borderColor: 'rgb(255, 102, 235)', backgroundColor: 'rgba(255, 102, 242, 0.2)', yAxisText: 'Personnes' },
                 { id: 'soundChart', type: 'line', label: 'Capteur Son', data: chartData.sound, borderColor: 'rgb(102, 192, 75)', backgroundColor: 'rgba(102, 192, 75, 0.2)', yAxisText: 'Son (dB)' }
             ];
 
@@ -145,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.remove(); 
                     const messageDiv = document.createElement('div');
                     messageDiv.style.cssText = "color: #a8b2d1; text-align: center; padding-top: 2rem; font-size: 1rem;";
-                    messageDiv.textContent = `Aucune donnée disponible pour ${chartInfo.label}.`;
+                    messageDiv.textContent = `Aucune donnée disponible pour "${chartInfo.label}".`;
                     parent.appendChild(messageDiv);
                 }
             });

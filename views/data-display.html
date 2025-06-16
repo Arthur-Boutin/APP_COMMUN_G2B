@@ -12,7 +12,7 @@
 
 </head>
 <body>
-<div class="container container-data">
+<div class="container-data">
     <header>
         <h1>Affichage des données</h1>
     </header>
@@ -20,7 +20,9 @@
     <main>
         <!-- Bouton de bascule entre la vue liste et la vue cartes -->
         <div class="toggle-container">
-            <button id="toggleViewBtn" class="form-btn">Passer à la vue Cartes</button>
+            <button id="toggleViewBtnCard" class="form-data-btn form-btn">Passer à la vue Carte</button>
+            <button id="toggleViewBtnList" class="form-data-btn form-btn">Passer à la vue Liste</button>
+            <button id="toggleViewBtnGraph" class="form-data-btn form-btn">Passer à la vue Graphique</button>
         </div>
 
         <!-- Vue Liste -->
@@ -29,7 +31,7 @@
             <div class="actuator-list" id="sensor-reading">
                 <ul class="simple-readings-list">
                     <?php foreach ($lastSensorsReadings as $reading): ?>
-                        <li><?= htmlspecialchars($reading) ?></li>
+                        <li><?= $reading ?></li>
                     <?php endforeach; ?>
                 </ul>
             </div>
@@ -38,7 +40,7 @@
             <div class="actuator-list" id="actuator-states">
                 <ul class="simple-readings-list">
                     <?php foreach ($lastActuatorsReadings as $reading): ?>
-                        <li><?= htmlspecialchars($reading) ?></li>
+                        <li><?= $reading ?></li>
                     <?php endforeach; ?>
                 </ul>
             </div>
@@ -48,40 +50,36 @@
         <div id="buttonView" class="section hidden">
             <h2>Capteurs (derniers relevés)</h2>
             <div class="data-buttons-grid">
-                <?php foreach ($lastSensorsReadings as $readingString):
-                    // Extrait la description du capteur de la chaîne pour le titre de la carte
-                    preg_match('/^(.*?)\s*:/', $readingString, $matches);
-                    $description = isset($matches[1]) ? trim($matches[1]) : 'Capteur Inconnu';
+                <?php foreach ($lastSensorsReadingsCardFormat as $sensorsReading):
+                    $sensor = $sensorsReading[0];
+                    $value = $sensorsReading[1];
+                    $date = $sensorsReading[2];
                 ?>
-                    <div class="data-display-card">
-                        <h3><?= htmlspecialchars($description) ?></h3>
-                        <p class="data-value-full"><?= htmlspecialchars($readingString) ?></p>
-                    </div>
+                <div class="data-display-card">
+                    <h3><?= $sensor ?></h3>
+                    <p class="data-value-full"><?= $value ?></p>
+                    <p class="data-date"><?= $date ?></p>
+                </div>
                 <?php endforeach; ?>
             </div>
 
             <h2>Actionneurs (derniers relevés)</h2>
             <div class="data-buttons-grid">
-                <?php foreach ($lastActuatorsReadings as $readingString):
-                    // Extrait la description de l'actionneur de la chaîne pour le titre de la carte
-                    preg_match('/^(.*?)\s*-/', $readingString, $matches);
-                    $description = isset($matches[1]) ? trim($matches[1]) : 'Actionneur Inconnu';
+                <?php foreach ($lastActuatorsReadingsCardFormat as $actuatorsReading):
+                    $actuator = $actuatorsReading[0];
+                    $date = $actuatorsReading[1];
                 ?>
-                    <div class="data-display-card">
-                        <h3><?= htmlspecialchars($description) ?></h3>
-                        <p class="data-value-full"><?= htmlspecialchars($readingString) ?></p>
-                    </div>
+                <div class="data-display-card">
+                    <h3 class="actuator-title"><?= $actuator ?></h3>
+                    <p class="data-actuator-date"><?= $date ?></p>
+                </div>
                 <?php endforeach; ?>
             </div>
         </div>
 
         <!-- Section pour les Graphiques -->
-        <div id="graphicsView" class="section"> 
+        <div id="graphicsView" class="section hidden">
             <h2>Historique des Capteurs</h2>
-            <!-- Bouton de bascule globale pour tous les graphiques -->
-            <div class="toggle-container" style="margin-bottom: 20px;">
-                <button id="toggleAllChartsBtn" class="form-btn">Masquer tous les Graphiques</button>
-            </div>
 
             <div class="chart-container" id="temperatureChartContainer">
                 <canvas id="temperatureChart"></canvas>
